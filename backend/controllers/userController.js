@@ -35,10 +35,10 @@ userRouter.post('/login', async (request, response) => {
                 // Passwords match, so the admin is authenticated
                 const token = generateUserToken(user);
 
-                // Set the token as a cookie in the response with a specific path
+                // Set the token as a cookie in the response
                 response.setHeader('Set-Cookie', cookie.serialize('token', token, {
                     httpOnly: true,
-                    maxAge: 60 * 60, // Token expires in 1 hour (adjust as needed)
+                    maxAge: 60 * 60, // Token expires in 1 hour
                 }));
 
                 response.json({

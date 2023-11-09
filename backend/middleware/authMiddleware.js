@@ -28,7 +28,7 @@ export const authenticateUser = (req, res, next) => {
 };
 
 export const authenticateAdmin = (req, res, next) => {
-    const token = req.header('Authorization');
+    const token = req.header('Authorization') || req.cookies.token;
 
     if (!token) {
         return res.status(401).json({ message: 'Unauthorized' });
@@ -36,7 +36,7 @@ export const authenticateAdmin = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, secretKey);
-        req.user = decoded;
+        req.admin = decoded;
         if (decoded.role === 'admin') {
             next();
         } else {
