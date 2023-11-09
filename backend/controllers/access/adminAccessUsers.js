@@ -1,10 +1,13 @@
 import express from 'express';
 import User from '../../models/userModel.js'
+import { authenticateAdmin } from '../../middleware/authMiddleware.js';
+import { generateAdminToken } from '../../utils/token.js';
+import cookie from 'cookie'
 
 const adminUserRouter = express.Router();
 
-// Get all ordinary users (accessible by admin)
-adminUserRouter.get('/users', async (request, response) => {
+// Get all ordinary users (accessible by admin) ^^ THIS IS WORKING THIS IS WHERE I STOPPED
+adminUserRouter.get('/users', authenticateAdmin, async (request, response) => {
     try {
         // You can add an access control check here to ensure that only admin users can access this route
         const users = await User.find({});
@@ -14,8 +17,8 @@ adminUserRouter.get('/users', async (request, response) => {
     }
 });
 
-// Get a single ordinary user by ID (accessible by admin)
-adminUserRouter.get('/users/:id', async (request, response) => {
+// Get a single ordinary user by ID (accessible by admin)  ^^ THIS IS WORKING THIS IS WHERE I STOPPED
+adminUserRouter.get('/users/:id', authenticateAdmin, async (request, response) => {
     try {
         // You can add an access control check here to ensure that only admin users can access this route
         const user = await User.findById(request.params.id);
