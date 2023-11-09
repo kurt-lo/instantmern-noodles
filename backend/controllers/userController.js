@@ -30,7 +30,7 @@ userRouter.post('/login', async (request, response) => {
         const user = await User.findOne({ email });
 
         if (user) {
-            
+
             if (user.password === password) {
                 // Passwords match, so the admin is authenticated
                 const token = generateUserToken(user);
@@ -39,7 +39,6 @@ userRouter.post('/login', async (request, response) => {
                 response.setHeader('Set-Cookie', cookie.serialize('token', token, {
                     httpOnly: true,
                     maxAge: 60 * 60, // Token expires in 1 hour (adjust as needed)
-                    path: '/api/users', // Set the path to the desired route
                 }));
 
                 response.json({
@@ -72,7 +71,7 @@ userRouter.get('/', authenticateUser, async (request, response) => {
 });
 
 // Get a single ordinary user by ID
-userRouter.get('/:id', async (request, response) => {
+userRouter.get('/:id', authenticateUser, async (request, response) => {
     try {
         const user = await User.findById(request.params.id);
         if (user) {
@@ -86,7 +85,7 @@ userRouter.get('/:id', async (request, response) => {
 });
 
 // Update an ordinary user's information
-userRouter.put('/update/:id', async (request, response) => {
+userRouter.put('/update/:id', authenticateUser, async (request, response) => {
     try {
         const user = await User.findById(request.params.id);
         if (user) {
@@ -107,7 +106,7 @@ userRouter.put('/update/:id', async (request, response) => {
 });
 
 // Delete an ordinary user by ID
-userRouter.delete('/users/:id', async (request, response) => {
+userRouter.delete('/users/:id', authenticateUser, async (request, response) => {
     try {
         const user = await User.findById(request.params.id);
         if (user) {
@@ -120,6 +119,16 @@ userRouter.delete('/users/:id', async (request, response) => {
         console.error(error);
         response.status(500).json({ message: 'Server Error' });
     }
+});
+
+//Logout the user and destroy cookie
+userRouter.post('/logout', async (request, response) => {
+    // Clear the token cookie by setting an expired date in the past
+    response.setHeader('Set-Cookie', cookie.serialize('token', '', {
+        httpOnly: true,
+        expires: new Date(0), // Set the cookie to expire immediately
+    }));
+    response.json({ message: 'Logged out successfully' });
 });
 
 export default userRouter;

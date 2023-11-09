@@ -12,6 +12,7 @@ export function generateUserToken(user) {
     _id: user._id,
     role: 'user',
   };
+  
   return jwt.sign(payload, secretKey, { expiresIn: '1h' }); // Token expires in 1 hour
 }
 

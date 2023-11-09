@@ -5,14 +5,17 @@ dotenv.config();
 const secretKey = process.env.JWT_SECRET;
 
 export const authenticateUser = (req, res, next) => {
-    const token = req.header('Authorization');
+    const token = req.header('Authorization') || req.cookies.token;
 
     if (!token) {
+        console.log('No token provided');
         return res.status(401).json({ message: 'Unauthorized' });
     }
 
     try {
         const decoded = jwt.verify(token, secretKey);
+        console.log('Decoded token:', decoded);
+
         req.user = decoded;
         if (decoded.role === 'user') {
             next();
@@ -20,6 +23,7 @@ export const authenticateUser = (req, res, next) => {
             return res.status(403).json({ message: 'Access denied' });
         }
     } catch (error) {
+        console.error('Error verifying token:', error);
         return res.status(401).json({ message: 'Unauthorized' });
     }
 };
