@@ -1,5 +1,8 @@
 import express from 'express';
 import User from '../models/userModel.js';
+import { authenticateUser } from '../middleware/authMiddleware.js'
+import { generateUserToken } from '../utils/token.js';
+import cookie from 'cookie'
 
 const userRouter = express.Router();
 
@@ -7,6 +10,7 @@ const userRouter = express.Router();
 userRouter.post('/register', async (request, response) => {
     try {
         const { name, email, password } = request.body;
+
         const user = await User.create({
             name,
             email,
@@ -14,7 +18,7 @@ userRouter.post('/register', async (request, response) => {
         });
         response.status(201).json(user);
     } catch (error) {
-        response.status(400).json({ message: 'Invalid User Data' });
+        response.status(400).json({ message: 'Invalid User Data', error: error.message });
     }
 });
 
@@ -26,9 +30,20 @@ userRouter.post('/login', async (request, response) => {
         const user = await User.findOne({ email });
 
         if (user) {
+            
             if (user.password === password) {
                 // Passwords match, so the admin is authenticated
+                const token = generateUserToken(user);
+
+                // Set the token as a cookie in the response with a specific path
+                response.setHeader('Set-Cookie', cookie.serialize('token', token, {
+                    httpOnly: true,
+                    maxAge: 60 * 60, // Token expires in 1 hour (adjust as needed)
+                    path: '/api/users', // Set the path to the desired route
+                }));
+
                 response.json({
+                    token,
                     _id: user._id,
                     name: user.name,
                     email: user.email,
@@ -41,12 +56,13 @@ userRouter.post('/login', async (request, response) => {
             response.status(401).json({ message: 'Invalid email' });
         }
     } catch (error) {
+        console.error('Error:', error);
         response.status(500).json({ message: 'Server Error' });
     }
 });
 
 // Get all ordinary users
-userRouter.get('/', async (request, response) => {
+userRouter.get('/', authenticateUser, async (request, response) => {
     try {
         const users = await User.find({});
         response.json(users);

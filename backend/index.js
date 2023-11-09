@@ -20,11 +20,9 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
 // User routes
-// app.use('/api/users', protect, userRoutes);
 app.use('/api/users', userRoutes);
 
 // Admin routes
-// app.use('/api/admin', protectAdmin, adminRoutes);
 app.use('/api/admin', adminRoutes);
 
 //Admin route for accessing user data

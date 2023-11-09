@@ -1,5 +1,7 @@
 import express from 'express';
 import Admin from '../models/adminModel.js';
+import { authenticateAdmin } from '../middleware/authMiddleware.js';
+import { generateAdminToken } from '../utils/token.js';
 
 const adminRouter = express.Router();
 
@@ -28,7 +30,9 @@ adminRouter.post('/login', async (request, response) => {
         if (admin) {
             if (admin.password === password) {
                 // Passwords match, so the admin is authenticated
+                const token = generateAdminToken(admin);
                 response.json({
+                    token,
                     _id: admin._id,
                     name: admin.name,
                     email: admin.email,
@@ -47,7 +51,7 @@ adminRouter.post('/login', async (request, response) => {
 
 
 // Get all admin
-adminRouter.get('/account', async (request, response) => {
+adminRouter.get('/account', authenticateAdmin, async (request, response) => {
     try {
         const admins = await Admin.find({});
         response.json(admins);
