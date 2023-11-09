@@ -14,7 +14,6 @@ export const authenticateUser = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, secretKey);
-        console.log('Decoded token:', decoded);
 
         req.user = decoded;
         if (decoded.role === 'user') {

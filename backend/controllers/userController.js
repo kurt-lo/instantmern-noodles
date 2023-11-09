@@ -60,63 +60,90 @@ userRouter.post('/login', async (request, response) => {
     }
 });
 
-// Get all ordinary users
-userRouter.get('/', authenticateUser, async (request, response) => {
+// Get user profile
+userRouter.get('/profile', authenticateUser, async (request, response) => {
     try {
-        const users = await User.find({});
-        response.json(users);
+        // Retrieve the authenticated user from req.user
+        const authenticatedUser = request.user;
+
+        // Fetch the user details from the database using the _id from req.user
+        const user = await User.findById(authenticatedUser._id);
+
+        if (!user) {
+            return response.status(404).json({ message: 'User not found' });
+        }
+
+        // Respond with the user's profile
+        response.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+        });
     } catch (error) {
+        console.error('Error:', error);
         response.status(500).json({ message: 'Server Error' });
     }
 });
 
-// Get a single ordinary user by ID
-userRouter.get('/:id', authenticateUser, async (request, response) => {
+// Update user profile
+userRouter.put('/profile', authenticateUser, async (request, response) => {
     try {
-        const user = await User.findById(request.params.id);
-        if (user) {
-            response.json(user);
-        } else {
-            response.status(404).json({ message: 'User not found' });
+        // Retrieve the authenticated user from req.user
+        const authenticatedUser = request.user;
+
+        // Fetch the user details from the database using the _id from req.user
+        const user = await User.findById(authenticatedUser._id);
+
+        if (!user) {
+            return response.status(404).json({ message: 'User not found' });
         }
+
+        // Update user's profile with the data from the request body
+        user.name = request.body.name || user.name; // Update name if provided
+        user.email = request.body.email || user.email; // Update email if provided
+
+        // Save the updated user details
+        await user.save();
+
+        // Respond with the updated user profile
+        response.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            // Add other profile fields as needed
+        });
     } catch (error) {
+        console.error('Error:', error);
         response.status(500).json({ message: 'Server Error' });
     }
 });
 
-// Update an ordinary user's information
-userRouter.put('/update/:id', authenticateUser, async (request, response) => {
-    try {
-        const user = await User.findById(request.params.id);
-        if (user) {
-            user.name = request.body.name || user.name;
-            user.email = request.body.email || user.email;
-            if (request.body.password) {
-                user.password = request.body.password;
-            }
 
-            const updatedUser = await user.save();
-            response.json(updatedUser);
-        } else {
-            response.status(404).json({ message: 'User not found' });
-        }
-    } catch (error) {
-        response.status(500).json({ message: 'Server Error' });
-    }
-});
-
-// Delete an ordinary user by ID
-userRouter.delete('/users/:id', authenticateUser, async (request, response) => {
+// Delete user profile
+userRouter.delete('/profile', authenticateUser, async (request, response) => {
     try {
-        const user = await User.findById(request.params.id);
-        if (user) {
-            await User.deleteOne({ _id: user._id });
-            response.json({ message: 'User removed' });
-        } else {
-            response.status(404).json({ message: 'User not found' });
+        // Retrieve the authenticated user from req.user
+        const authenticatedUser = request.user;
+
+        // Fetch the user details from the database using the _id from req.user
+        const user = await User.findById(authenticatedUser._id);
+
+        if (!user) {
+            return response.status(404).json({ message: 'User not found' });
         }
+
+        // Remove the user from the database
+        await user.deleteOne();
+
+        // Clear the token cookie to log the user out
+        response.setHeader('Set-Cookie', cookie.serialize('token', '', {
+            httpOnly: true,
+            expires: new Date(0), // Set the cookie to expire immediately
+        }));
+
+        response.json({ message: 'User deleted successfully' });
     } catch (error) {
-        console.error(error);
+        console.error('Error:', error);
         response.status(500).json({ message: 'Server Error' });
     }
 });
