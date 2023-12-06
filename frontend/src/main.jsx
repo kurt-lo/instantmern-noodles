@@ -10,6 +10,7 @@ import RegisterPage from './page/RegisterPage.jsx';
 import HomePage from './page/HomePage.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import Header from './component/Header.jsx';
+import PrivateRoute from './component/PrivateRoute.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -21,7 +22,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path='/' element={<App />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/register' element={<RegisterPage />} />
-          <Route path='/home' element={<HomePage />} />
+          <Route path='' element={<PrivateRoute />}>
+            <Route path='/home' element={<HomePage />} />
+          </Route>
         </Routes>
       </AuthProvider>
     </BrowserRouter>
