@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import axios from '../context/axiosConfig';
+import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
 const Header = () => {
   const { isAuthenticated, loading, logout } = useContext(AuthContext);
   const [data, setData] = useState(null);
-
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {

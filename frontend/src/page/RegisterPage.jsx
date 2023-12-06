@@ -4,7 +4,6 @@ import Header from '../component/Header'
 const RegisterPage = () => {
   return (
     <div>
-      <Header />
       RegisterPage
     </div>
   )

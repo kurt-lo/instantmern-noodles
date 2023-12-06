@@ -44,11 +44,11 @@ const LoginPage = () => {
     } catch (error) {
       console.error('Error during login:', error.message);
     }
+    window.location.reload(true) //para marefresh yung header kasi hindi nagrerefresh e
   }
 
   return (
     <section>
-      <Header />
       <form onSubmit={handleSubmit}>
         <input type="email" value={email} placeholder='Enter Email' onChange={(e) => setEmail(e.target.value)} />
         <input type="password" value={password} placeholder='Enter Password' onChange={(e) => setPassword(e.target.value)} />

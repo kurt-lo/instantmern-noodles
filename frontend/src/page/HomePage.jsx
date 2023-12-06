@@ -1,13 +1,13 @@
-import React from 'react'
-import Header from '../component/Header'
+import React, { useContext } from 'react';
+import Header from '../component/Header';
 
 const HomePage = () => {
+
   return (
     <main>
-    <Header />
       HomePage
     </main>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;
