@@ -1,23 +1,57 @@
 import { useState } from "react";
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Header from "../component/Header";
 
 const LoginPage = () => {
 
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const navigate = useNavigate();
+  
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(`Username: ${username}`);
-    console.log(`Password: ${password}`);
-    setUsername('');
-    setPassword('');
+
+    try {
+      // const response = await fetch('/api/users/login', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ email, password }),
+      // })
+
+      const response = await axios.post('/api/users/login', {
+        email,
+        password,
+      });
+
+      const data = await response.data;
+      if (data.token) {
+        localStorage.setItem('authUserToken', data.token);
+        // toast.success("Login successful!");
+        console.log("Login successful!");
+        setEmail('');
+        setPassword('');
+        navigate('/home');
+      } else {
+        setEmail('');
+        setPassword('');
+        toast.error('Invalid Email or Password!');
+      }
+    } catch (error) {
+      console.error('Error during login:', error.message);
+    }
   }
 
   return (
     <section>
+      <Header />
       <form onSubmit={handleSubmit}>
-        <input type="text" value={username} placeholder='Enter Username' onChange={(e) => setUsername(e.target.value)}/>
-        <input type="password" value={password} placeholder='Enter Password' onChange={(e) => setPassword(e.target.value)}/>
+        <input type="email" value={email} placeholder='Enter Email' onChange={(e) => setEmail(e.target.value)} />
+        <input type="password" value={password} placeholder='Enter Password' onChange={(e) => setPassword(e.target.value)} />
         <button type="submit">Login</button>
       </form>
     </section>
