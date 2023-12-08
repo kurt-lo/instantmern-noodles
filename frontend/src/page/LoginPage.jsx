@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Header from "../component/Header";
+import axios from '../context/axiosConfig'
+// import axios from 'axios';
 
 const LoginPage = () => {
 

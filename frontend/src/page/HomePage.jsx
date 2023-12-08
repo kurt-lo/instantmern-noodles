@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-import Header from '../component/Header';
+import React from 'react';
 
 const HomePage = () => {
 
