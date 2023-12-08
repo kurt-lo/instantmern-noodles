@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import axios from '../context/axiosConfig'
-// import axios from 'axios';
+import axios from '../context/axiosConfig';
 
 const LoginPage = () => {
 
@@ -15,14 +14,6 @@ const LoginPage = () => {
     e.preventDefault()
 
     try {
-      // const response = await fetch('/api/users/login', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ email, password }),
-      // })
-
       const response = await axios.post('/api/users/login', {
         email,
         password,
@@ -31,8 +22,9 @@ const LoginPage = () => {
       const data = await response.data;
       if (data.token) {
         localStorage.setItem('authUserToken', data.token);
+        alert('Login successful!')
         // toast.success("Login successful!");
-        console.log("Login successful!");
+        // console.log("Login successful!");
         setEmail('');
         setPassword('');
         navigate('/home');

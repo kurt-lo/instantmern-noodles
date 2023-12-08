@@ -10,7 +10,7 @@ const PrivateRoute = () => {
     const token = localStorage.getItem('authUserToken');
 
     if (!token) {
-      console.log('no token')
+      // console.log('no token')
       return false;
     }
 
@@ -26,11 +26,11 @@ const PrivateRoute = () => {
 
       if (response.ok) {
         // User is authenticated
-        console.log('token get')
+        // console.log('token get')
         return true;
       } else {
         // Token is invalid or expired
-        console.log('token invalid or expired')
+        // console.log('token invalid or expired')
         return false;
       }
     } catch (error) {

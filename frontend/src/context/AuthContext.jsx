@@ -10,7 +10,7 @@ const AuthProvider = ({ children }) => {
 
     const login = async (credentials) => {
         try {
-            const response = await axios.post('/api/login', credentials);
+            const response = await axios.post('/api/users/login', credentials);
             const { token } = response.data;
             localStorage.setItem('authUserToken', token);
 
