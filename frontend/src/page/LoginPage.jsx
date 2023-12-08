@@ -2,6 +2,8 @@ import { useState } from "react";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import axios from '../context/axiosConfig';
+import { FaUser } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
 
 const LoginPage = () => {
 
@@ -9,7 +11,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -40,11 +42,26 @@ const LoginPage = () => {
   }
 
   return (
-    <section>
-      <form onSubmit={handleSubmit}>
-        <input type="email" value={email} placeholder='Enter Email' onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" value={password} placeholder='Enter Password' onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Login</button>
+    <section className="mt-[10rem]">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center w-[40%] mx-auto rounded-[25px] gap-[2rem] py-[2rem] pt-[3rem]"
+      >
+        <div className="flex items-center gap-[2rem] w-[80%] mx-auto">
+          <FaUser className="text-[1.5rem]" />
+          <input type="email" value={email} placeholder='Enter Email' onChange={(e) => setEmail(e.target.value)}
+            className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
+          />
+        </div>
+        <div className="flex items-center gap-[2rem] w-[80%] mx-auto">
+          <RiLockPasswordFill className="text-[1.5rem]" />
+          <input type="password" value={password} placeholder='Enter Password' onChange={(e) => setPassword(e.target.value)}
+            className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
+          />
+        </div>
+        <button type="submit"
+          className="py-[.5rem] px-[3rem] border-solid border-2 border-stone-950 rounded-[25px] font-[700] hover:bg-stone-950 hover:text-gray-300"
+        >Login</button>
       </form>
     </section>
   );
