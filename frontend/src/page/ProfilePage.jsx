@@ -5,6 +5,7 @@ import { IoMdClose } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { MdEmail } from "react-icons/md";
+import Header from '../component/Header';
 
 const ProfilePage = () => {
 
@@ -45,79 +46,82 @@ const ProfilePage = () => {
     }
 
     return (
-        <section className='section-profile mt-[5rem] w-[50%] mx-auto px-[4rem] py-[2rem] rounded-[10px]'>
-            <div className='relative'>
-                <h1 className='text-center text-2xl font-bold mb-4'>Profile Information</h1>
-                <FaUserEdit className='absolute text-[1.5rem] right-0 -top-0 cursor-pointer'
-                    onClick={() => setIsModalOpen(true)}
-                />
-            </div>
-            {isModalOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center">
-                    <div className="bg-white p-2 rounded-[15px] py-[2rem] w-[40%]">
-                        <div className='relative'>
-                            <h1 className="font-semibold text-center text-xl text-stone-900 pb-[1.5rem]">
-                                Update Profile Info
-                            </h1>
-                            <IoMdClose className='absolute text-[1.5rem] right-3 -top-0 cursor-pointer'
-                                onClick={() => setIsModalOpen(false)}
-                            />
-                        </div>
-                        <div className="flex flex-col gap-[1.5rem]">
-                            <div className='flex items-center gap-[2rem] w-[80%] mx-auto'>
-                                <FaUser className="text-[1.5rem]" />
-                                <input
-                                    type="text"
-                                    className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
-                                    placeholder={userData.name}
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
+        <>
+            <Header />
+            <section className='section-profile mt-[5rem] w-[50%] mx-auto px-[4rem] py-[2rem] rounded-[10px]'>
+                <div className='relative'>
+                    <h1 className='text-center text-2xl font-bold mb-4'>Profile Information</h1>
+                    <FaUserEdit className='absolute text-[1.5rem] right-0 -top-0 cursor-pointer'
+                        onClick={() => setIsModalOpen(true)}
+                    />
+                </div>
+                {isModalOpen && (
+                    <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center">
+                        <div className="bg-white p-2 rounded-[15px] py-[2rem] w-[40%]">
+                            <div className='relative'>
+                                <h1 className="font-semibold text-center text-xl text-stone-900 pb-[1.5rem]">
+                                    Update Profile Info
+                                </h1>
+                                <IoMdClose className='absolute text-[1.5rem] right-3 -top-0 cursor-pointer'
+                                    onClick={() => setIsModalOpen(false)}
                                 />
                             </div>
-                            <div className='flex items-center gap-[2rem] w-[80%] mx-auto'>
-                                <MdEmail className="text-[1.5rem]" />
-                                <input
-                                    type="email"
-                                    className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
-                                    placeholder={userData.email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
+                            <div className="flex flex-col gap-[1.5rem]">
+                                <div className='flex items-center gap-[2rem] w-[80%] mx-auto'>
+                                    <FaUser className="text-[1.5rem]" />
+                                    <input
+                                        type="text"
+                                        className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
+                                        placeholder={userData.name}
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                    />
+                                </div>
+                                <div className='flex items-center gap-[2rem] w-[80%] mx-auto'>
+                                    <MdEmail className="text-[1.5rem]" />
+                                    <input
+                                        type="email"
+                                        className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
+                                        placeholder={userData.email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
+                                <div className='flex items-center gap-[2rem] w-[80%] mx-auto'>
+                                    <RiLockPasswordFill className="text-[1.5rem]" />
+                                    <input
+                                        type="password"
+                                        className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
+                                        placeholder='********'
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                </div>
                             </div>
-                            <div className='flex items-center gap-[2rem] w-[80%] mx-auto'>
-                                <RiLockPasswordFill className="text-[1.5rem]" />
-                                <input
-                                    type="password"
-                                    className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
-                                    placeholder='********'
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
+                            <div className="text-center">
+                                <button className="mt-[1.5rem] py-[.5rem] px-[3rem] border-solid border-2 border-stone-950 rounded-[25px] font-[700] hover:bg-stone-950 hover:text-gray-300"
+                                    onClick={handleSubmit}
+                                >
+                                    Update
+                                </button>
                             </div>
-                        </div>
-                        <div className="text-center">
-                            <button className="mt-[1.5rem] py-[.5rem] px-[3rem] border-solid border-2 border-stone-950 rounded-[25px] font-[700] hover:bg-stone-950 hover:text-gray-300"
-                                onClick={handleSubmit}
-                            >
-                                Update
-                            </button>
                         </div>
                     </div>
-                </div>
-            )}
-            {/* <div className='flex justify-between'>
+                )}
+                {/* <div className='flex justify-between'>
                 <h1 className='text-center text-2xl font-bold mb-4'>Profile Information</h1>
                 <FaUserEdit className='text-[1.5rem]' />
             </div> */}
-            {userData ? (
-                <div className='text-lg'>
-                    <p className='pt-[.7rem]'><span className='font-semibold'>Name:</span> {userData.name}</p>
-                    <p className='pt-[.7rem]'><span className='font-semibold'>Email:</span> {userData.email}</p>
-                </div>
-            ) : (
-                <div className='text-lg'>
-                    <p>Loading user data...</p>
-                </div>
-            )}
-        </section>
+                {userData ? (
+                    <div className='text-lg'>
+                        <p className='pt-[.7rem]'><span className='font-semibold'>Name:</span> {userData.name}</p>
+                        <p className='pt-[.7rem]'><span className='font-semibold'>Email:</span> {userData.email}</p>
+                    </div>
+                ) : (
+                    <div className='text-lg'>
+                        <p>Loading user data...</p>
+                    </div>
+                )}
+            </section>
+        </>
     )
 }
 

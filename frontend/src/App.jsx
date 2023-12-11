@@ -2,9 +2,12 @@ import Header from "./component/Header";
 
 const App = () => {
   return (
-    <section>
-      WELCOME TO MERN+AUTH APPLICATION
-    </section>
+    <>
+      <Header /> {/* login for user */}
+      <section>
+        WELCOME TO MERN+AUTH APPLICATION
+      </section>
+    </>
   )
 }
 

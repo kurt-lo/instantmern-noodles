@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import HomePage from '../page/HomePage';
 
 const PrivateRoute = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -19,7 +18,7 @@ const PrivateRoute = () => {
       const response = await fetch('/api/users/profile', {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `${token}`,
           'Content-Type': 'application/json',
         },
       });
@@ -53,7 +52,7 @@ const PrivateRoute = () => {
     return <div>Loading...</div>;
   }
 
-  console.log(isAuthenticated)
+  // console.log(isAuthenticated)
   return isAuthenticated ? <Outlet /> : <Navigate to='/login' />;
 };
 

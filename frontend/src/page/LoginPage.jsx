@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../context/axiosConfig';
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
+import Header from "../component/Header";
 
 const LoginPage = () => {
 
@@ -42,6 +43,8 @@ const LoginPage = () => {
   }
 
   return (
+    <>
+    <Header />
     <section className="mt-[10rem]">
       <form
         onSubmit={handleSubmit}
@@ -64,6 +67,7 @@ const LoginPage = () => {
         >Login</button>
       </form>
     </section>
+    </>
   );
 };
 
