@@ -28,6 +28,15 @@ app.use('/api/admin', adminRoutes);
 //Admin route for accessing user data
 app.use('/api/admin/access-users', adminUserRouter)
 
+//Product routes for admin
+// app.use('/api/admin/product', productRoutes) //needs admin in the url para gumana kung admin lang makaka-access
+
+//Product routes for admin
+// app.use('/api/users/product', productRoutes) //needs users in the url para gumana kung admin lang makaka-access
+
+//Cart routes
+// app.use('/api/cart', cartRoutes)
+
 app.get('/', (request, response) => response.send('Backend is ready!'))
 
 app.listen(port, () => console.log(`Backend is connected to port: ${port}`))

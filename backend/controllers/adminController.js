@@ -1,5 +1,6 @@
 import express from 'express';
 import Admin from '../models/adminModel.js';
+import Product from '../models/productModel.js';
 import { authenticateAdmin } from '../middleware/authMiddleware.js';
 import { generateAdminToken } from '../utils/token.js';
 import cookie from 'cookie'
@@ -201,6 +202,17 @@ adminRouter.post('/logout', async (request, response) => {
         expires: new Date(0),
     }));
     response.json({ message: 'Logged out successfully' });
+});
+
+//FOR PRODUCT ROUTER, 
+//DITO KO NA SINAMA KASI UNAUTHORIZED KAPAG NAKAHIWALAY, NEED MAY ADMIN SA URL PARA MA-ACCESS NG ADMIN
+adminRouter.get('/products', authenticateAdmin, async (request, response) => {
+    try {
+        const products = await Product.find({});
+        response.json(products);
+    } catch (error) {
+        response.status(500).json({ message: 'Server Error' });
+    }
 });
 
 export default adminRouter;

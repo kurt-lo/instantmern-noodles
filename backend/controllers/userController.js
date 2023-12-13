@@ -1,5 +1,6 @@
 import express from 'express';
 import User from '../models/userModel.js';
+import Product from '../models/productModel.js';
 import { authenticateUser } from '../middleware/authMiddleware.js'
 import { generateUserToken } from '../utils/token.js';
 import cookie from 'cookie'
@@ -156,6 +157,17 @@ userRouter.post('/logout', async (request, response) => {
         expires: new Date(0), // Set the cookie to expire immediately
     }));
     response.json({ message: 'Logged out successfully' });
+});
+
+//FOR PRODUCT ROUTER, 
+//DITO KO NA SINAMA KASI UNAUTHORIZED KAPAG NAKAHIWALAY, NEED MAY USERS SA URL PARA MA-ACCESS NG ADMIN
+userRouter.get('/products', authenticateUser, async (request, response) => {
+    try {
+        const products = await Product.find({});
+        response.json(products);
+    } catch (error) {
+        response.status(500).json({ message: 'Server Error' });
+    }
 });
 
 export default userRouter;
