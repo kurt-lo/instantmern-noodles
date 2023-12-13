@@ -17,6 +17,7 @@ import AdminRegisterPage from '../admin/page/AdminRegisterPage.jsx';
 import AdminHomePage from '../admin/page/AdminHomePage.jsx';
 import AdminProfilePage from '../admin/page/AdminProfilePage.jsx'
 import AdminMainPage from '../admin/page/AdminMainPage.jsx';
+import AdminViewUsers from '../admin/page/AdminViewUsers.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -39,6 +40,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path='' element={<AdminPrivateRoute />}>
             <Route path='/admin/home' element={<AdminHomePage />} />
             <Route path='/admin/profile' element={<AdminProfilePage />} />
+            <Route path='admin/access-users/users' element={<AdminViewUsers />} />
           </Route>
         </Routes>
       </AuthProvider>

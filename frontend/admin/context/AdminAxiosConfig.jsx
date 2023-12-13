@@ -14,7 +14,6 @@ instanceAdmin.interceptors.request.use((config) => {
         config.headers.Authorization = `Bearer ${adminToken}`;
     }
 
-    console.log('Request Headers:', config.headers);
     return config;
 });
 

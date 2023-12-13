@@ -22,8 +22,9 @@ const AdminHeader = () => {
                 {admin ? `Welcome, ${admin.name}!` : 'Loading...'}
               </button>
               {dropdown && (
-                <div className="profile absolute right-[120px] bg-white px-[1rem] py-[.1rem] rounded-[5px] text-center">
+                <div className="profile flex flex-col absolute right-[120px] bg-white px-[1rem] py-[.1rem] rounded-[5px] text-center">
                   <Link to='/admin/profile'>Admin Profile</Link>
+                  <Link to='/admin/access-users/users'>All Users</Link>
                 </div>
               )}
             </div>
