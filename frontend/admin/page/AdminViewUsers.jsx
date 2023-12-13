@@ -6,6 +6,7 @@ import { IoMdClose } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { MdEmail } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 
 const AdminViewUsers = () => {
 
@@ -42,7 +43,18 @@ const AdminViewUsers = () => {
             window.location.reload(true)
             setIsModalOpen(false);
         } catch (error) {
-            console.error(`Error updating all user data: ${error}`)
+            console.error(`Error updating specific user data: ${error}`)
+        }
+    };
+
+    const handleDeleteUser = async (id) => {
+        try {
+            await axios.delete(`/api/admin/access-users/users/${id}`);
+            const updatedUserData = allUserData.filter((user) => user._id !== id);
+            setAllUserData(updatedUserData);
+            alert('User deleted successfully!');
+        } catch (error) {
+            console.error(`Error delete specific user data: ${error}`)
         }
     };
 
@@ -61,22 +73,29 @@ const AdminViewUsers = () => {
                 {allUserData ? (
                     <div className='text-lg relative'>
                         {allUserData.map((user) => (
-                            <div key={user._id} className='mb-4 ' >
-                                <FaUserEdit className='absolute text-[1.5rem] cursor-pointer right-0'
-                                    onClick={() => setIsModalOpen(user._id)}
-                                />
-                                <p className='pt-[.7rem]'>
-                                    <span className='font-semibold'>Name:</span> {user.name}
-                                </p>
-                                <p className='pt-[.7rem]'>
-                                    <span className='font-semibold'>Email:</span> {user.email}
-                                </p>
-                                <p className='pt-[.7rem]'>
-                                    <span className='font-semibold'>Date Created:</span> {formatDate(user.createdAt)}
-                                </p>
-                                <p className='pt-[.7rem]'>
-                                    <span className='font-semibold'>Date Updated:</span> {formatDate(user.updatedAt)}
-                                </p>
+                            <div key={user._id} className='mb-4'>
+                                <div className='absolute flex right-0'>
+                                    <FaUserEdit className='text-[1.5rem] update-icon cursor-pointer'
+                                        onClick={() => setIsModalOpen(user._id)}
+                                    />
+                                    <MdDelete className='text-[1.5rem] delete-icon cursor-pointer'
+                                        onClick={() => handleDeleteUser(user._id)}
+                                    />
+                                </div>
+                                <div>
+                                    <p className='pt-[.7rem]'>
+                                        <span className='font-semibold'>Name:</span> {user.name}
+                                    </p>
+                                    <p className='pt-[.7rem]'>
+                                        <span className='font-semibold'>Email:</span> {user.email}
+                                    </p>
+                                    <p className='pt-[.7rem]'>
+                                        <span className='font-semibold'>Date Created:</span> {formatDate(user.createdAt)}
+                                    </p>
+                                    <p className='pt-[.7rem]'>
+                                        <span className='font-semibold'>Date Updated:</span> {formatDate(user.updatedAt)}
+                                    </p>
+                                </div>
                                 {/* Modal for each user update */}
                                 {isModalOpen === user._id && (
                                     <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center">
