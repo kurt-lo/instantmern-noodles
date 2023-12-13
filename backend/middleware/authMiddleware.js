@@ -24,6 +24,7 @@ export const authenticateUser = (req, res, next) => {
             req.headers.authorization = `Bearer ${token}`;
             next();
         } else {
+            console.log(decoded)
             return res.status(403).json({ message: 'Access denied' });
         }
     } catch (error) {
@@ -39,6 +40,10 @@ export const authenticateAdmin = (req, res, next) => {
         return res.status(401).json({ message: 'Unauthorized' });
     }
 
+    if (token.startsWith('Bearer ')) {
+        token = token.slice(7);
+    }
+    
     try {
         const decoded = jwt.verify(token, secretKey);
         req.admin = decoded;
