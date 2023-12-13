@@ -33,3 +33,15 @@ input {
 }
 
 /* MODAL EDIT */
+.update-icon {
+    color: rgb(1, 77, 1);
+    margin-right: .5rem;
+}
+
+.delete-icon {
+    color: rgb(156, 2, 2);
+}
+
+.delete-icon:hover, .update-icon:hover {
+    opacity: 0.3;
+}
