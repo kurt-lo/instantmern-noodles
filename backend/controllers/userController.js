@@ -417,6 +417,7 @@ userRouter.post('/order/checkout', authenticateUser, async (request, response) =
                 name: cartItem.name,
                 quantity: cartItem.quantity,
                 price: cartItem.price,
+                imagePath: cartItem.imagePath,
             })),
             totalAmount: userCart.totalAmount,
         });
