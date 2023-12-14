@@ -4,6 +4,7 @@ import Product from '../models/productModel.js';
 import Cart from '../models/cartModel.js';
 import Order from '../models/orderModel.js';
 import { authenticateUser } from '../middleware/authMiddleware.js'
+import uploadMiddleware from '../middleware/uploadMiddleware.js'
 import { generateUserToken } from '../utils/token.js';
 import cookie from 'cookie'
 
@@ -215,17 +216,18 @@ userRouter.get('/cart', authenticateUser, async (request, response) => {
     }
 });
 
-// @route   POST /api/users/cart
+// @route   POST /api/users/cart/:productId
 // @desc    ADD Product to Cart
 // @access  Private
-userRouter.post('/cart/:productId', authenticateUser, async (request, response) => {
+userRouter.post('/cart/:productId', authenticateUser, uploadMiddleware, async (request, response) => {
     try {
         const userId = request.user._id;
         const productId = request.params.productId;
         const { quantity } = request.body;
 
-        //Fetch the user's cart
+        // Fetch the user's cart
         let userCart = await Cart.findOne({ user: userId });
+
         // If the user doesn't have a cart, create one
         if (!userCart) {
             userCart = new Cart({ user: userId, items: [], totalAmount: 0 });
@@ -233,7 +235,7 @@ userRouter.post('/cart/:productId', authenticateUser, async (request, response) 
 
         const product = await Product.findById(productId);
         if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
+            return response.status(404).json({ message: 'Product not found' });
         }
 
         // Check if the product is already in the cart
@@ -242,13 +244,16 @@ userRouter.post('/cart/:productId', authenticateUser, async (request, response) 
             // If the product is already in the cart, update the quantity
             existingProduct.quantity += quantity || 1;
         } else {
+            // Use the imagePath directly from the Product model
             userCart.items.push({
                 itemId: productId,
                 name: product.name,
                 quantity: quantity || 1,
                 price: product.price,
+                imagePath: product.imagePath, // Use imagePath from Product
             });
         }
+
         // Recalculate the total amount
         userCart.totalAmount = userCart.items.reduce((total, item) => total + item.price * item.quantity, 0);
 
@@ -259,6 +264,7 @@ userRouter.post('/cart/:productId', authenticateUser, async (request, response) 
         response.status(500).json({ message: 'Server Error' });
     }
 });
+
 
 // @route   DELETE /api/users/cart/:id
 // @desc    DELETE Product to Cart
@@ -324,6 +330,9 @@ userRouter.delete('/cart/reduce/:productId', authenticateUser, async (request, r
     }
 });
 
+// @route   PUT /api/users/cart/:id
+// @desc    INCREASE the Product by 1 to Cart
+// @access  Private
 userRouter.put('/cart/increase/:productId', authenticateUser, async (request, response) => {
     try {
         const userId = request.user._id;

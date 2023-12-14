@@ -28,6 +28,9 @@ const cartSchema = mongoose.Schema(
                     type: Number,
                     required: true,
                 },
+                imagePath: {
+                    type: String,
+                }
             },
         ],
         totalAmount: {

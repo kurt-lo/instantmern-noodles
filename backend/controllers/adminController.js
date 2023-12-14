@@ -3,6 +3,7 @@ import Admin from '../models/adminModel.js';
 import Product from '../models/productModel.js';
 import { authenticateAdmin } from '../middleware/authMiddleware.js';
 import { generateAdminToken } from '../utils/token.js';
+import uploadMiddleware from '../middleware/uploadMiddleware.js';
 import cookie from 'cookie'
 
 const adminRouter = express.Router();
@@ -240,14 +241,21 @@ adminRouter.get('/products/:id', authenticateAdmin, async (request, response) =>
 // @route   POST /api/admin/products
 // @desc    Create new product
 // @access  Private
-adminRouter.post('/products', authenticateAdmin, async (request, response) => {
+adminRouter.post('/products', authenticateAdmin, uploadMiddleware, async (request, response) => {
     try {
         const { name, description, price } = request.body;
+
+        if (!request.files || request.files.length === 0) {
+            return response.status(400).json({ error: 'No files uploaded.' });
+        }
+
+        const productImage = request.files[0];
 
         const newProduct = new Product({
             name,
             description,
             price,
+            imagePath: productImage.path,
         });
 
         const savedProduct = await newProduct.save();
@@ -260,22 +268,42 @@ adminRouter.post('/products', authenticateAdmin, async (request, response) => {
 // @route   PUT /api/admin/products/:id
 // @desc    Update a product by ID
 // @access  Private
-adminRouter.put('/products/:id', authenticateAdmin, async (request, response) => {
+adminRouter.put('/products/:id', authenticateAdmin, uploadMiddleware, async (request, response) => {
     try {
         const productId = request.params.id;
         const { name, description, price } = request.body;
 
-        const updateProduct = await Product.findByIdAndUpdate(
-            productId,
-            { name, description, price},
-            { new: true }, 
-        );
+        // Check if files were uploaded
+        if (request.files && request.files.length > 0) {
+            // Get the first uploaded file (assuming only one file is allowed for update)
+            const productImage = request.files[0];
 
-        if (!updateProduct) {
-            return response.status(404).json({ message: 'Product not found' });
+            // Update product with new data and imagePath
+            const updateProduct = await Product.findByIdAndUpdate(
+                productId,
+                { name, description, price, imagePath: productImage.path },
+                { new: true },
+            );
+
+            if (!updateProduct) {
+                return response.status(404).json({ message: 'Product not found' });
+            }
+
+            response.json(updateProduct);
+        } else {
+            // No files were uploaded, update product without changing imagePath
+            const updateProduct = await Product.findByIdAndUpdate(
+                productId,
+                { name, description, price },
+                { new: true },
+            );
+
+            if (!updateProduct) {
+                return response.status(404).json({ message: 'Product not found' });
+            }
+
+            response.json(updateProduct);
         }
-
-        response.json(updateProduct);
     } catch (error) {
         console.error(error);
         response.status(500).json({ message: 'Server Error' });
