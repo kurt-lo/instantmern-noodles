@@ -1,6 +1,7 @@
-import express from 'express';
+import express, { response } from 'express';
 import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
+import Cart from '../models/cartModel.js';
 import { authenticateUser } from '../middleware/authMiddleware.js'
 import { generateUserToken } from '../utils/token.js';
 import cookie from 'cookie'
@@ -160,7 +161,11 @@ userRouter.post('/logout', async (request, response) => {
 });
 
 //FOR PRODUCT ROUTER, 
-//DITO KO NA SINAMA KASI UNAUTHORIZED KAPAG NAKAHIWALAY, NEED MAY USERS SA URL PARA MA-ACCESS NG ADMIN
+//DITO KO NA SINAMA KASI UNAUTHORIZED KAPAG NAKAHIWALAY, NEED MAY USERS SA URL PARA MA-ACCESS NG USERS
+
+// @route   GET /api/users/products
+// @desc    Get all products
+// @access  Private
 userRouter.get('/products', authenticateUser, async (request, response) => {
     try {
         const products = await Product.find({});
@@ -170,4 +175,177 @@ userRouter.get('/products', authenticateUser, async (request, response) => {
     }
 });
 
+// @route   GET /api/users/products/:id
+// @desc    Get a specific product by ID
+// @access  Private
+userRouter.get('/products/:id', authenticateUser, async (request, response) => {
+    try {
+        const productId = request.params.id;
+        const product = await Product.findById(productId);
+
+        if (!product) {
+            return response.status(404).json({ message: 'Product not found!' })
+        }
+
+        response.json(product);
+    } catch (error) {
+        response.status(500).json({ message: 'Server Error' });
+    }
+});
+
+//FOR CART ROUTER
+//DITO KO NA SINAMA KASI UNAUTHORIZED KAPAG NAKAHIWALAY, NEED MAY USERS SA URL PARA MA-ACCESS NG USERS
+
+// @route   GET /api/users/cart
+// @desc    Get Cart
+// @access  Private
+userRouter.get('/cart', authenticateUser, async (request, response) => {
+    try {
+        const userId = request.user._id;
+        const userCart = await Cart.findOne({ user: userId });
+
+        if (!userCart) {
+            return res.status(404).json({ message: 'Cart not found' });
+        }
+        response.json(userCart);
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({ message: 'Server Error' });
+    }
+});
+
+// @route   POST /api/users/cart
+// @desc    ADD Product to Cart
+// @access  Private
+userRouter.post('/cart/:productId', authenticateUser, async (request, response) => {
+    try {
+        const userId = request.user._id;
+        const productId = request.params.productId;
+        const { quantity } = request.body;
+
+        //Fetch the user's cart
+        let userCart = await Cart.findOne({ user: userId });
+        // If the user doesn't have a cart, create one
+        if (!userCart) {
+            userCart = new Cart({ user: userId, items: [], totalAmount: 0 });
+        }
+
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        // Check if the product is already in the cart
+        const existingProduct = userCart.items.find(item => item.itemId.equals(productId));
+        if (existingProduct) {
+            // If the product is already in the cart, update the quantity
+            existingProduct.quantity += quantity || 1;
+        } else {
+            userCart.items.push({
+                itemId: productId,
+                name: product.name,
+                quantity: quantity || 1,
+                price: product.price,
+            });
+        }
+        // Recalculate the total amount
+        userCart.totalAmount = userCart.items.reduce((total, item) => total + item.price * item.quantity, 0);
+
+        await userCart.save();
+        response.json(userCart);
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({ message: 'Server Error' });
+    }
+});
+
+// @route   DELETE /api/users/cart/:id
+// @desc    DELETE Product to Cart
+// @access  Private
+userRouter.delete('/cart/:productId', authenticateUser, async (request, response) => {
+    try {
+        const userId = request.user._id;
+        const productId = request.params.productId;
+
+        const userCart = await Cart.findOne({ user: userId });
+        if (!userCart || userCart.items.length === 0) {
+            return res.status(404).json({ message: 'Cart not found or is empty' });
+        }
+
+        const itemIndex = userCart.items.findIndex(item => item.itemId.equals(productId));
+        if (itemIndex === -1) {
+            return response.status(404).json({ message: 'Product not found in the cart ' });
+        }
+
+        userCart.items.splice(itemIndex, 1);
+        userCart.totalAmount = userCart.items.reduce((total, item) => total + item.price * item.quantity, 0);
+
+        await userCart.save();
+        response.json(userCart);
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({ message: 'Server Error' });
+    }
+});
+
+// @route   DELETE /api/users/cart/:id
+// @desc    REDUCE the Product by 1 to Cart
+// @access  Private
+userRouter.delete('/cart/reduce/:productId', authenticateUser, async (request, response) => {
+    try {
+        const userId = request.user._id;
+        const productId = request.params.productId;
+
+        const userCart = await Cart.findOne({ user: userId });
+        if (!userCart || userCart.items.length === 0) {
+            return response.status(404).json({ message: 'Cart not found or is empty ' });
+        };
+
+        const itemIndex = userCart.items.findIndex(item => item.itemId.equals(productId));
+        if (itemIndex === -1) {
+            return response.status(404).json({ message: 'Product not found in the cart ' });
+        }
+
+        const selectedItem = userCart.items[itemIndex];
+
+        if (selectedItem.quantity > 1) {
+            selectedItem.quantity -= 1;
+        } else {
+            userCart.items.splice(itemIndex, 1);
+        }
+
+        userCart.totalAmount = userCart.items.reduce((total, item) => total + item.price * item.quantity, 0);
+        await userCart.save();
+        response.json(userCart);
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({ message: 'Server Error' });
+    }
+});
+
+userRouter.put('/cart/increase/:productId', authenticateUser, async (request, response) => {
+    try {
+        const userId = request.user._id;
+        const productId = request.params.productId;
+
+        const userCart = await Cart.findOne({ user: userId });
+        if (!userCart || userCart.items.length === 0) {
+            return response.status(404).json({ message: 'Cart not found or is empty' });
+        }
+
+        const itemIndex = userCart.items.findIndex(item => item.itemId.equals(productId));
+        if (itemIndex === -1) {
+            return response.status(404).json({ message: 'Product not found in the cart ' });
+        }
+        //Increment the items in cart
+        userCart.items[itemIndex].quantity += 1;
+
+        userCart.totalAmount = userCart.items.reduce((total, item) => total + item.price * item.quantity, 0);
+        await userCart.save();
+        response.json(userCart);
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({ message: 'Server Error' });
+    }
+});
 export default userRouter;
