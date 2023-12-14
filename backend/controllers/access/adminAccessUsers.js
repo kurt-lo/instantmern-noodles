@@ -35,7 +35,6 @@ adminUserRouter.get('/users/:id', authenticateAdmin, async (request, response) =
 // Update an ordinary user's information (accessible by admin)
 adminUserRouter.put('/users/:id', async (request, response) => {
     try {
-        // You can add an access control check here to ensure that only admin users can access this route
         const user = await User.findById(request.params.id);
         if (user) {
             user.name = request.body.name || user.name;

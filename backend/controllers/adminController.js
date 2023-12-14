@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { response } from 'express';
 import Admin from '../models/adminModel.js';
 import Product from '../models/productModel.js';
 import { authenticateAdmin } from '../middleware/authMiddleware.js';
@@ -204,13 +204,100 @@ adminRouter.post('/logout', async (request, response) => {
     response.json({ message: 'Logged out successfully' });
 });
 
-//FOR PRODUCT ROUTER, 
+//FOR PRODUCT ROUTER STARTS
 //DITO KO NA SINAMA KASI UNAUTHORIZED KAPAG NAKAHIWALAY, NEED MAY ADMIN SA URL PARA MA-ACCESS NG ADMIN
+
+// @route   GET /api/admin/products
+// @desc    Get all products
+// @access  Private
 adminRouter.get('/products', authenticateAdmin, async (request, response) => {
     try {
         const products = await Product.find({});
         response.json(products);
     } catch (error) {
+        response.status(500).json({ message: 'Server Error' });
+    }
+});
+
+// @route   GET /api/admin/products/:id
+// @desc    Get a specific product by ID
+// @access  Private
+adminRouter.get('/products/:id', authenticateAdmin, async (request, response) => {
+    try {
+        const productId = request.params.id;
+        const product = await Product.findById(productId);
+
+        if (!product) {
+            return response.status(404).json({ message: 'Product not found!' })
+        }
+
+        response.json(product);
+    } catch (error) {
+        response.status(500).json({ message: 'Server Error' });
+    }
+});
+ 
+// @route   POST /api/admin/products
+// @desc    Create new product
+// @access  Private
+adminRouter.post('/products', authenticateAdmin, async (request, response) => {
+    try {
+        const { name, description, price } = request.body;
+
+        const newProduct = new Product({
+            name,
+            description,
+            price,
+        });
+
+        const savedProduct = await newProduct.save();
+        response.status(201).json(savedProduct);
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+// @route   PUT /api/admin/products/:id
+// @desc    Update a product by ID
+// @access  Private
+adminRouter.put('/products/:id', authenticateAdmin, async (request, response) => {
+    try {
+        const productId = request.params.id;
+        const { name, description, price } = request.body;
+
+        const updateProduct = await Product.findByIdAndUpdate(
+            productId,
+            { name, description, price},
+            { new: true }, 
+        );
+
+        if (!updateProduct) {
+            return response.status(404).json({ message: 'Product not found' });
+        }
+
+        response.json(updateProduct);
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({ message: 'Server Error' });
+    }
+});
+
+// @route   DELETE /api/admin/products/:id
+// @desc    DELETE a product by ID
+// @access  Private
+adminRouter.delete('/products/:id', authenticateAdmin, async (request, response) => {
+    try {
+        const productId = request.params.id;
+
+        const deleteProduct = await Product.findByIdAndDelete(productId);
+
+        if (!deleteProduct) {
+            return response.status(404).json({ message: 'Product not found!' });
+        };
+
+        response.json({ message: 'Product deleted successfully! '});
+    } catch (error) {
+        console.error(error);
         response.status(500).json({ message: 'Server Error' });
     }
 });
