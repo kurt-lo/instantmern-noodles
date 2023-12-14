@@ -1,7 +1,8 @@
-import express, { response } from 'express';
+import express, { request, response } from 'express';
 import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
 import Cart from '../models/cartModel.js';
+import Order from '../models/orderModel.js';
 import { authenticateUser } from '../middleware/authMiddleware.js'
 import { generateUserToken } from '../utils/token.js';
 import cookie from 'cookie'
@@ -348,4 +349,82 @@ userRouter.put('/cart/increase/:productId', authenticateUser, async (request, re
         response.status(500).json({ message: 'Server Error' });
     }
 });
+
+//___ORDER ROUTES____
+
+// @route   GET /api/order
+// @desc    Get all orders for the authenticated user
+// @access  Private
+userRouter.get('/order', authenticateUser, async (request, response) => {
+    try {
+        const userId = request.user._id;
+
+        const orders = await Order.find({ user: userId }).populate('items.itemId');
+        response.json(orders);
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({ message: 'Server Error' });
+    }
+});
+
+// @route   GET /api/order/:orderId
+// @desc    Get details of a specific order
+// @access  Private
+userRouter.get('/order/:orderId', authenticateUser, async (request, response) => {
+    try {
+        const userId = request.user._id;
+        const orderId = request.params.orderId;
+
+        // Find the order for the given user
+        const order = await Order.findOne({ _id: orderId, user: userId }).populate('items.itemId');
+        if (!order) {
+            return response.status(404).json({ message: 'Order not found' });
+        }
+        response.json(order);
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({ message: 'Server Error' });
+    }
+});
+
+// @route   POST /api/order/checkout
+// @desc    Checkout and create an order
+// @access  Private
+userRouter.post('/order/checkout', authenticateUser, async (request, response) => {
+    try {
+        const userId = request.user._id;
+
+        // Find the user cart
+        const userCart = await Cart.findOne({ user: userId }).populate('items.itemId');
+        if (!userCart || userCart.items.length === 0) {
+            return response.status(404).json({ message: 'Cart not found or is empty' });
+        }
+
+        // Create a new order instance
+        const newOrder = new Order({
+            user: userId,
+            items: userCart.items.map((cartItem) => ({
+                itemId: cartItem.itemId,  // Reference to the Product model
+                name: cartItem.name,
+                quantity: cartItem.quantity,
+                price: cartItem.price,
+            })),
+            totalAmount: userCart.totalAmount,
+        });
+
+        // Save the order
+        const savedOrder = await newOrder.save();
+
+        // Clear cart after checkout
+        userCart.items = [];
+        userCart.totalAmount = 0;
+        await userCart.save();
+
+        response.status(201).json(savedOrder);
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({ message: 'Server Error' });
+    }
+});
+
 export default userRouter;
