@@ -207,7 +207,7 @@ userRouter.get('/cart', authenticateUser, async (request, response) => {
         const userCart = await Cart.findOne({ user: userId });
 
         if (!userCart) {
-            return res.status(404).json({ message: 'Cart not found' });
+            return response.status(404).json({ message: 'Cart not found' });
         }
         response.json(userCart);
     } catch (error) {
@@ -429,7 +429,8 @@ userRouter.post('/order/checkout', authenticateUser, async (request, response) =
             })),
             totalAmount: userCart.totalAmount,
             deliveryDetails: {
-                name: user.name,
+                // name: user.name, //eto para makuha na yung mismong name ng user hindi na mag fillup
+                name,
                 address,
                 phoneNumber,
             },

@@ -4,11 +4,19 @@ import axios from 'axios';
 import { LuMinus } from "react-icons/lu";
 import { LuPlus } from "react-icons/lu";
 import { MdDelete } from "react-icons/md";
+import { IoMdClose } from "react-icons/io";
+import { IoHome } from "react-icons/io5";
+import { BsFillTelephoneFill } from "react-icons/bs";
+import { FaUser } from "react-icons/fa";
 
 const CartPage = () => {
 
     const [carts, setCarts] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -16,7 +24,7 @@ const CartPage = () => {
                 const response = await axios.get(`/api/users/cart`);
                 setCarts(response.data.items);
                 setTotalAmount(response.data.totalAmount);
-                console.log(response.data.totalAmount)
+                // console.log(response.data.totalAmount)
                 // console.log(response.data)
             } catch (error) {
                 console.error(`Error fetching cart ${error}`)
@@ -54,9 +62,25 @@ const CartPage = () => {
         }
     }
 
+    const handleCheckout = async () => {
+        try {
+            const response = await axios.post(`/api/users/order/checkout`, {
+                // items: carts, hindi na need nito kasi hinahandle na ng server-side code which is sa checkout controller
+                // totalAmount,
+                name,
+                address,
+                phoneNumber,
+            })
+            alert('Order placed successfully!');
+            setIsModalOpen(false);
+            window.location.reload(true)
+        } catch (error) {
+            console.error(`Error checkingout the cart ${error}`)
+        }
+    }
+
     //for image render and turn uploads\\image to this -> uploads/image para mabasa ng ayos
     const imageRender = (cart) => `http://localhost:9999/${cart.imagePath.replace(/\\/g, '/')}`;
-
 
     return (
         <>
@@ -107,9 +131,65 @@ const CartPage = () => {
                             <p className='text-[1.5rem] font-[500]'>₱{totalAmount}</p>
                         </div>
                         <div className='px-[3rem] pt-[.5rem] float-right'>
-                            <button className='py-[.5rem] px-[3rem] border-solid border-2 border-slate-800 rounded-[25px] font-[700] hover:bg-slate-800 hover:text-gray-300'>
+                            <button
+                                className='py-[.5rem] px-[3rem] border-solid border-2 border-slate-800 rounded-[25px] font-[700] hover:bg-slate-800 hover:text-gray-300'
+                                onClick={() => setIsModalOpen(true)}
+                            >
                                 Checkout
                             </button>
+                            {isModalOpen && (
+                                <div className="fixed inset-0 bg-slate-800 bg-opacity-25 backdrop-blur-sm flex items-center justify-center">
+                                    <div className="bg-white p-2 rounded-[15px] py-[2rem] w-[40%]">
+                                        <div className='relative'>
+                                            <h1 className="font-semibold text-center text-xl text-slate-800 pb-[1.5rem]">
+                                                Delivery Details
+                                            </h1>
+                                            <IoMdClose className='absolute text-[1.5rem] right-3 -top-0 cursor-pointer'
+                                                onClick={() => setIsModalOpen(false)}
+                                            />
+                                        </div>
+                                        <div className="flex flex-col gap-[1.5rem]">
+                                        <div className='flex items-center gap-[2rem] w-[80%] mx-auto'>
+                                                <FaUser className="text-[1.5rem]" />
+                                                <input
+                                                    type="text"
+                                                    className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
+                                                    placeholder='Enter name'
+                                                    value={name}
+                                                    onChange={(e) => setName(e.target.value)}
+                                                />
+                                            </div>
+                                            <div className='flex items-center gap-[2rem] w-[80%] mx-auto'>
+                                                <IoHome className="text-[1.5rem]" />
+                                                <input
+                                                    type="text"
+                                                    className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
+                                                    placeholder='Enter address'
+                                                    value={address}
+                                                    onChange={(e) => setAddress(e.target.value)}
+                                                />
+                                            </div>
+                                            <div className='flex items-center gap-[2rem] w-[80%] mx-auto'>
+                                                <BsFillTelephoneFill className="text-[1.5rem]" />
+                                                <input
+                                                    type="text"
+                                                    className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
+                                                    placeholder='Enter phone number'
+                                                    value={phoneNumber}
+                                                    onChange={(e) => setPhoneNumber(e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="text-center">
+                                            <button className="mt-[1.5rem] py-[.5rem] px-[3rem] border-solid border-2 border-slate-800 rounded-[25px] font-[700] hover:bg-slate-800 hover:text-gray-300"
+                                                onClick={handleCheckout}
+                                            >
+                                                Checkout
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

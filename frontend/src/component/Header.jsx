@@ -24,8 +24,9 @@ const Header = () => {
                 {user ? `Welcome, ${user.name}!` : 'Loading...'}
               </button>
               {dropdown && (
-                <div className="profile absolute bg-white px-[1rem] py-[.1rem] rounded-[5px] text-center">
+                <div className="profile flex flex-col absolute bg-white px-[1rem] py-[.1rem] rounded-[5px] text-center">
                   <Link to='/profile'>User Profile</Link>
+                  <Link to='/order'>Order</Link>
                 </div>
               )}
             </div>
