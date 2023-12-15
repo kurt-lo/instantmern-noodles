@@ -3,6 +3,7 @@ import Header from '../component/Header'
 import axios from 'axios';
 import { LuMinus } from "react-icons/lu";
 import { LuPlus } from "react-icons/lu";
+import { MdDelete } from "react-icons/md";
 
 const CartPage = () => {
 
@@ -21,6 +22,16 @@ const CartPage = () => {
 
         fetchCart();
     }, []);
+
+    const deleteProductInCart = async (productId) => {
+        try {
+            const response = await axios.delete(`api/users/cart/${productId}`)
+            alert('Product removed in cart!')
+            setCarts(response.data.items)
+        } catch (error) {
+            console.error(`Error deleting product in cart ${error}`)
+        }
+    }
 
     const reduceCart = async (productId) => {
         try {
@@ -64,11 +75,12 @@ const CartPage = () => {
                                     </div>
                                 )}
                                 <div className='absolute flex items-center text-[1rem] gap-[.5rem] font-[500] top-[1.5rem] right-[1.5rem]'>
-                                    <LuMinus className='cursor-pointer' onClick={() => reduceCart(cart.itemId)}/>
+                                    <LuMinus className='cursor-pointer' onClick={() => reduceCart(cart.itemId)} />
                                     <span>
                                         {cart.quantity}x
                                     </span>
-                                    <LuPlus className='cursor-pointer' onClick={() => increaseCart(cart.itemId)} />
+                                    <LuPlus className='cursor-pointer mr-[1rem]' onClick={() => increaseCart(cart.itemId)} />
+                                    <MdDelete className='text-[1.2rem] text-red-900 cursor-pointer' onClick={() => deleteProductInCart(cart.itemId)} />
                                 </div>
 
                                 <div className='w-full'>
