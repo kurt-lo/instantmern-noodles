@@ -402,6 +402,12 @@ userRouter.get('/order/:orderId', authenticateUser, async (request, response) =>
 userRouter.post('/order/checkout', authenticateUser, async (request, response) => {
     try {
         const userId = request.user._id;
+        const { name, address, phoneNumber } = request.body;
+
+        // Validate delivery details
+        if (!address || !phoneNumber) {
+            return response.status(400).json({ message: 'Please provide address, and phone number for delivery.' });
+        }
 
         // Find the user cart
         const userCart = await Cart.findOne({ user: userId }).populate('items.itemId');
@@ -409,6 +415,7 @@ userRouter.post('/order/checkout', authenticateUser, async (request, response) =
             return response.status(404).json({ message: 'Cart not found or is empty' });
         }
 
+        const user = await User.findById(userId);
         // Create a new order instance
         const newOrder = new Order({
             user: userId,
@@ -420,6 +427,11 @@ userRouter.post('/order/checkout', authenticateUser, async (request, response) =
                 imagePath: cartItem.imagePath,
             })),
             totalAmount: userCart.totalAmount,
+            deliveryDetails: {
+                name: user.name,
+                address,
+                phoneNumber,
+            },
         });
 
         // Save the order
