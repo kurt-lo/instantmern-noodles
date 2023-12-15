@@ -8,7 +8,7 @@ const Header = () => {
   const [dropdown, setDropdown] = useState(false);
 
   return (
-    <nav className="flex justify-between px-[2rem] py-[1rem] mb-[1rem] text-stone-950 font-[700]">
+    <nav className="flex justify-between px-[2rem] py-[1rem] mb-[1rem] text-slate-800 font-[700]">
       <div>
         <Link to='/'>MERN+AUTH</Link>
       </div>

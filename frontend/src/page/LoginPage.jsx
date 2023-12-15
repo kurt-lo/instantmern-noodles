@@ -45,7 +45,7 @@ const LoginPage = () => {
   return (
     <>
     <Header />
-    <section className="mt-[10rem]">
+    <section className="mt-[10rem] text-slate-800">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col items-center w-[40%] mx-auto rounded-[25px] gap-[2rem] py-[2rem] pt-[3rem]"
@@ -63,7 +63,7 @@ const LoginPage = () => {
           />
         </div>
         <button type="submit"
-          className="py-[.5rem] px-[3rem] border-solid border-2 border-stone-950 rounded-[25px] font-[700] hover:bg-stone-950 hover:text-gray-300"
+          className="py-[.5rem] px-[3rem] border-solid border-2 border-slate-800 rounded-[25px] font-[700] hover:bg-slate-800 hover:text-gray-300"
         >Login</button>
       </form>
     </section>
