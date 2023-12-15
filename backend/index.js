@@ -8,6 +8,7 @@ import adminUserRouter from "./controllers/access/adminAccessUsers.js";
 import path from "path";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ connectDB()
 const app = express();
 
 app.use(express.json())
+app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 
 app.use(cookieParser())
