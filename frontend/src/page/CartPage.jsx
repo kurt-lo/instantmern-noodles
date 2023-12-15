@@ -32,7 +32,7 @@ const CartPage = () => {
                     </h1>
                     <div className='py-[3rem]'>
                         {carts.map((cart) => (
-                            <div key={cart._id} className='relative flex items-center gap-[5rem] hover:shadow-xl relative rounded-xl py-[1rem]'>
+                            <div key={cart._id} className='flex items-center gap-[5rem] hover:shadow-xl relative rounded-xl py-[1rem]'>
                                 {cart.imagePath && (
                                     <div className='pl-[2rem]'>
                                         <img
