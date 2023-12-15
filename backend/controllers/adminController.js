@@ -36,7 +36,7 @@ adminRouter.post('/login', async (request, response) => {
 
                 response.setHeader('Set-Cookie', cookie.serialize('token', token, {
                     httpOnly: true,
-                    maxAge: 60 * 60,
+                    maxAge: 24 * 60 * 60,
                 }));
 
                 response.json({
