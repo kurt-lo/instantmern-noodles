@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../component/Header';
 import axios from 'axios'
+import { FaShoppingCart } from "react-icons/fa";
+import { toast } from 'react-toastify';
 
 const HomePage = () => {
 
@@ -19,6 +21,16 @@ const HomePage = () => {
     fetchProduct();
   }, []);
 
+  const addToCart = async (productId) => {
+    try {
+      const response = await axios.post(`api/users/cart/${productId}`)
+      // console.log(response.data);
+      toast.success(`Added to cart!`);
+    } catch (error) {
+      console.error(`Error adding to cart ${error}`)
+    }
+  }
+
   //for image render and turn uploads\\image to this -> uploads/image para mabasa ng ayos
   const imageRender = (product) => `http://localhost:9999/${product.imagePath.replace(/\\/g, '/')}`;
 
@@ -28,9 +40,9 @@ const HomePage = () => {
       <main className='text-slate-800'>
         <div className='pt-[2rem] px-[5rem]'>
           <h1 className='text-center font-[700] text-[3.5rem]'>Product List</h1>
-          <div className='grid sm:grid-cols-2 xl:grid-cols-4  py-[3rem] text-center rounded-xl'>
+          <div className='grid sm:grid-cols-2 xl:grid-cols-4  py-[3rem] text-center'>
             {products.map((product) => (
-              <div key={product._id} className='hover:shadow-xl'>
+              <div key={product._id} className='hover:shadow-xl relative rounded-xl py-[1rem]'>
                 <p className='text-[1.5rem] font-[600]'>
                   {product.name}
                 </p>
@@ -46,9 +58,12 @@ const HomePage = () => {
                 <p className='text-[1.1rem] font-[500]'>
                   {product.description}
                 </p>
-                <p>
-                  {product.price}
+                <p className='font-[500]'>
+                ₱{product.price}
                 </p>
+                <FaShoppingCart className='absolute bottom-[2rem] right-[2rem] text-[2rem] text-yellow-600 cursor-pointer hover:text-slate-800'
+                  onClick={() => addToCart(product._id)}
+                />
               </div>
             ))}
           </div>

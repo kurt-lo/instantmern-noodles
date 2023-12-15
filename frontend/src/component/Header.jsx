@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext'
+import { FaShoppingBag } from "react-icons/fa";
 
 const Header = () => {
 
@@ -23,11 +24,16 @@ const Header = () => {
                 {user ? `Welcome, ${user.name}!` : 'Loading...'}
               </button>
               {dropdown && (
-                <div className="profile absolute right-[120px] bg-white px-[1rem] py-[.1rem] rounded-[5px] text-center">
+                <div className="profile absolute bg-white px-[1rem] py-[.1rem] rounded-[5px] text-center">
                   <Link to='/profile'>User Profile</Link>
                 </div>
               )}
             </div>
+          </li>
+          <li>
+            <Link to='/cart' className='flex gap-[.5rem] items-center'>
+              <span>Cart</span><FaShoppingBag className='text-[1.3rem]' />
+            </Link>
           </li>
           <li>
             <Link to='/' onClick={logout}>Logout</Link>

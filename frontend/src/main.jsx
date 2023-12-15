@@ -18,6 +18,7 @@ import AdminHomePage from '../admin/page/AdminHomePage.jsx';
 import AdminProfilePage from '../admin/page/AdminProfilePage.jsx'
 import AdminMainPage from '../admin/page/AdminMainPage.jsx';
 import AdminViewUsers from '../admin/page/AdminViewUsers.jsx';
+import CartPage from './page/CartPage.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -32,6 +33,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path='' element={<PrivateRoute />}>
             <Route path='/home' element={<HomePage />} />
             <Route path='/profile' element={<ProfilePage />} />
+            <Route path='/cart' element={<CartPage />} />
           </Route>
           {/* FOR ADMIN */}
           <Route path='/admin' element={<AdminMainPage />} />
