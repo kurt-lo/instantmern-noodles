@@ -8,13 +8,16 @@ import { MdDelete } from "react-icons/md";
 const CartPage = () => {
 
     const [carts, setCarts] = useState([]);
+    const [totalAmount, setTotalAmount] = useState(0);
 
     useEffect(() => {
         const fetchCart = async () => {
             try {
                 const response = await axios.get(`/api/users/cart`);
                 setCarts(response.data.items);
-                // console.log(response.data.items)
+                setTotalAmount(response.data.totalAmount);
+                console.log(response.data.totalAmount)
+                // console.log(response.data)
             } catch (error) {
                 console.error(`Error fetching cart ${error}`)
             }
@@ -54,11 +57,12 @@ const CartPage = () => {
     //for image render and turn uploads\\image to this -> uploads/image para mabasa ng ayos
     const imageRender = (cart) => `http://localhost:9999/${cart.imagePath.replace(/\\/g, '/')}`;
 
+
     return (
         <>
             <Header />
             <section className='text-slate-800'>
-                <div className='pt-[2rem] px-[30rem]'>
+                <div className='pt-[2rem] 2xl:px-[30rem] xl:px-[20rem] md:px-[5rem] sm:px-0'>
                     <h1 className='text-center font-[700] text-[3.5rem]'>
                         Cart List
                     </h1>
@@ -96,6 +100,17 @@ const CartPage = () => {
                                 </div>
                             </div>
                         ))}
+                    </div>
+                    <div className='checkout'>
+                        <div className='flex items-center justify-between px-[7rem]'>
+                            <h1 className='text-[2rem] font-[500]'>Total</h1>
+                            <p className='text-[1.5rem] font-[500]'>₱{totalAmount}</p>
+                        </div>
+                        <div className='px-[3rem] pt-[.5rem] float-right'>
+                            <button className='py-[.5rem] px-[3rem] border-solid border-2 border-slate-800 rounded-[25px] font-[700] hover:bg-slate-800 hover:text-gray-300'>
+                                Checkout
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
