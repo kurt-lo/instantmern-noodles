@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../component/Header'
 import axios from 'axios';
+import { LuMinus } from "react-icons/lu";
+import { LuPlus } from "react-icons/lu";
 
 const CartPage = () => {
 
@@ -11,6 +13,7 @@ const CartPage = () => {
             try {
                 const response = await axios.get(`/api/users/cart`);
                 setCarts(response.data.items);
+                // console.log(response.data.items)
             } catch (error) {
                 console.error(`Error fetching cart ${error}`)
             }
@@ -18,6 +21,24 @@ const CartPage = () => {
 
         fetchCart();
     }, []);
+
+    const reduceCart = async (productId) => {
+        try {
+            const response = await axios.delete(`/api/users/cart/reduce/${productId}`)
+            setCarts(response.data.items);
+        } catch (error) {
+            console.error(`Error reducing cart ${error}`)
+        }
+    }
+
+    const increaseCart = async (productId) => {
+        try {
+            const response = await axios.put(`/api/users/cart/increase/${productId}`)
+            setCarts(response.data.items)
+        } catch (error) {
+            console.error(`Error increasing cart ${error}`)
+        }
+    }
 
     //for image render and turn uploads\\image to this -> uploads/image para mabasa ng ayos
     const imageRender = (cart) => `http://localhost:9999/${cart.imagePath.replace(/\\/g, '/')}`;
@@ -42,9 +63,14 @@ const CartPage = () => {
                                         />
                                     </div>
                                 )}
-                                <p className='absolute text-[1.1rem] font-[500] top-[1.5rem] right-[1.5rem]'>
-                                    {cart.quantity}x
-                                </p>
+                                <div className='absolute flex items-center text-[1rem] gap-[.5rem] font-[500] top-[1.5rem] right-[1.5rem]'>
+                                    <LuMinus className='cursor-pointer' onClick={() => reduceCart(cart.itemId)}/>
+                                    <span>
+                                        {cart.quantity}x
+                                    </span>
+                                    <LuPlus className='cursor-pointer' onClick={() => increaseCart(cart.itemId)} />
+                                </div>
+
                                 <div className='w-full'>
                                     <p className='text-[1.5rem] font-[600]'>
                                         {cart.name}
