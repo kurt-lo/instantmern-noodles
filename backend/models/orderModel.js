@@ -18,6 +18,9 @@ const orderSchema = new mongoose.Schema(
                     type: String,
                     required: true,
                 },
+                description: {
+                    type: String,
+                },
                 quantity: {
                     type: Number,
                     required: true,

@@ -248,6 +248,7 @@ userRouter.post('/cart/:productId', authenticateUser, uploadMiddleware, async (r
             userCart.items.push({
                 itemId: productId,
                 name: product.name,
+                description: product.description,
                 quantity: quantity || 1,
                 price: product.price,
                 imagePath: product.imagePath, // Use imagePath from Product
