@@ -369,7 +369,7 @@ userRouter.get('/order', authenticateUser, async (request, response) => {
     try {
         const userId = request.user._id;
 
-        const orders = await Order.find({ user: userId }).populate('items.itemId');
+        const orders = await Order.find({ user: userId }).populate('items.itemId').sort({ createdAt: -1 });
         response.json(orders);
     } catch (error) {
         console.error(error);
