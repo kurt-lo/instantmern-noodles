@@ -40,8 +40,10 @@ const AdminViewUsers = () => {
             const updatedUserData = allUserData.map(user => (user._id === id ? response.data : user));
             setAllUserData(updatedUserData);
             alert('Update profile successful!')
-            window.location.reload(true)
             setIsModalOpen(false);
+            setName('');
+            setEmail('');
+            setPassword('');
         } catch (error) {
             console.error(`Error updating specific user data: ${error}`)
         }
@@ -96,6 +98,18 @@ const AdminViewUsers = () => {
                                         <span className='font-semibold'>Date Updated:</span> {formatDate(user.updatedAt)}
                                     </p>
                                 </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className='text-lg'>
+                        <p>Loading all user data...</p>
+                    </div>
+                )}
+                {allUserData ? (
+                    <>
+                        {allUserData.map((user) => (
+                            <div key={user._id}>
                                 {/* Modal for each user update */}
                                 {isModalOpen === user._id && (
                                     <div className="fixed inset-0 bg-slate-800 bg-opacity-25 backdrop-blur-sm flex items-center justify-center">
@@ -150,10 +164,10 @@ const AdminViewUsers = () => {
                                 )}
                             </div>
                         ))}
-                    </div>
+                    </>
                 ) : (
-                    <div className='text-lg'>
-                        <p>Loading all user data...</p>
+                    <div>
+                        <p>Loading data...</p>
                     </div>
                 )}
             </section>
