@@ -50,6 +50,7 @@ const LoginPage = () => {
         onSubmit={handleSubmit}
         className="flex flex-col items-center w-[40%] mx-auto rounded-[25px] gap-[2rem] py-[2rem] pt-[3rem]"
       >
+        <h1 className="text-[2rem] font-[700]">Howdy, Login!</h1>
         <div className="flex items-center gap-[2rem] w-[80%] mx-auto">
           <FaUser className="text-[1.5rem]" />
           <input type="email" value={email} placeholder='Enter Email' onChange={(e) => setEmail(e.target.value)}
