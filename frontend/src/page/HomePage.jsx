@@ -51,7 +51,7 @@ const HomePage = () => {
           <h1 className='text-center font-[700] text-[3.5rem]'>Product List</h1>
           <input
             type="text"
-            placeholder='Search Order'
+            placeholder='Search Product'
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className='absolute right-0 mr-[10%] font-[500] px-[1rem] py-[.3rem] rounded-md'
