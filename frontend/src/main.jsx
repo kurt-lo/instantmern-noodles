@@ -46,7 +46,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path='' element={<AdminPrivateRoute />}>
             <Route path='/admin/home' element={<AdminHomePage />} />
             <Route path='/admin/profile' element={<AdminProfilePage />} />
-            <Route path='admin/access-users/users' element={<AdminViewUsers />} />
+            <Route path='/admin/access-users/users' element={<AdminViewUsers />} />
           </Route>
         </Routes>
       </AuthProvider>

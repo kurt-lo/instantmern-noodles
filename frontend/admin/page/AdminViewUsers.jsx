@@ -66,7 +66,7 @@ const AdminViewUsers = () => {
     return (
         <>
             <AdminHeader />
-            <section className='section-profile mt-[5rem] w-[50%] mx-auto px-[4rem] py-[2rem] rounded-[10px]'>
+            <section className='section-profile mt-[5rem] w-[50%] mx-auto px-[4rem] py-[2rem] rounded-[10px] text-slate-800'>
                 <div className=''>
                     <h1 className='text-center text-2xl font-bold mb-4'>All Users Profile Information</h1>
                 </div>
@@ -98,10 +98,10 @@ const AdminViewUsers = () => {
                                 </div>
                                 {/* Modal for each user update */}
                                 {isModalOpen === user._id && (
-                                    <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center">
+                                    <div className="fixed inset-0 bg-slate-800 bg-opacity-25 backdrop-blur-sm flex items-center justify-center">
                                         <div className="bg-white p-2 rounded-[15px] py-[2rem] w-[40%]">
                                             <div className='relative'>
-                                                <h1 className="font-semibold text-center text-xl text-stone-900 pb-[1.5rem]">
+                                                <h1 className="font-semibold text-center text-xl text-slate-800 pb-[1.5rem]">
                                                     User Profile Info
                                                 </h1>
                                                 <IoMdClose className='absolute text-[1.5rem] right-3 -top-0 cursor-pointer'
@@ -139,7 +139,7 @@ const AdminViewUsers = () => {
                                                 </div>
                                             </div>
                                             <div className="text-center">
-                                                <button className="mt-[1.5rem] py-[.5rem] px-[3rem] border-solid border-2 border-stone-950 rounded-[25px] font-[700] hover:bg-stone-950 hover:text-gray-300"
+                                                <button className="mt-[1.5rem] py-[.5rem] px-[3rem] border-solid border-2 border-slate-800 rounded-[25px] font-[700] hover:bg-slate-800 hover:text-gray-300"
                                                     onClick={() => handleUpdateAllUser(user._id)}
                                                 >
                                                     Update
