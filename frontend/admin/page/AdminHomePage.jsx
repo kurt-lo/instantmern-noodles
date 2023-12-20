@@ -19,6 +19,7 @@ const AdminHomePage = () => {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [files, setFiles] = useState(null);
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -51,6 +52,10 @@ const AdminHomePage = () => {
       setProducts([...products, response.data]);
       alert('Product added successfully!')
       setIsModalOpen(false);
+      setName('');
+      setDescription('');
+      setPrice('');
+      setFiles(null);
     } catch (error) {
       console.error(`Error adding admin product ${error}`)
     }
@@ -101,27 +106,38 @@ const AdminHomePage = () => {
   // to render the image
   const imageRender = (product) => `http://localhost:9999/${product.imagePath.replace(/\\/g, '/')}`;
 
+  // to search product
+  const filteredProducts = products.filter((product) => {
+    return (
+      product.name.toLowerCase().includes(search.toLowerCase()) ||
+      product.description.toLowerCase().includes(search.toLowerCase()) ||
+      product.price.toString().includes(search.toLowerCase())
+    )
+  })
+
   return (
     <>
       <AdminHeader />
       <section className='text-slate-800'>
         <div className='pt-[2rem] px-[5rem]'>
           <h1 className='text-center font-[700] text-[3.5rem]'>Product List</h1>
-          <div className='absolute right-0 mr-[10%] flex items-center gap-[2rem]'>
+          <div className='absolute right-0 flex items-center gap-[2rem]' style={{ marginRight: '5rem' }}>
             <input
               type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               placeholder='Search Product'
               className=' font-[500] px-[1rem] py-[.3rem] rounded-md'
             />
             <MdOutlineProductionQuantityLimits
               onClick={() => setIsModalOpen(true)}
-              className='text-[2rem] cursor-pointer'
+              className='text-[2rem] cursor-pointer border-2 border-solid border-slate-800 rounded-md'
             />
           </div>
           <div className='grid sm:grid-cols-2 xl:grid-cols-4 gap-[1.5rem] pt-[4rem] pb-[3rem] text-center'>
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <div key={product._id} className='hover:shadow-xl relative rounded-xl py-[1rem]'>
-                <div className='absolute flex right-0'>
+                <div className='absolute flex right-0' style={{ marginRight: '1rem', marginTop: '.7rem' }}>
                   <FaUserEdit className='text-[1.5rem] update-icon cursor-pointer'
                     onClick={() => setUpdateModalOpen(product._id)}
                   />
