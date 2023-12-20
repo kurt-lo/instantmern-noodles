@@ -1,30 +1,40 @@
-import React, { useEffect, useState } from 'react'
-import Header from '../component/Header'
+import React, { useEffect, useState } from 'react';
+import Header from '../component/Header';
 import axios from 'axios';
 
 const OrderPage = () => {
-
     const [orders, setOrders] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         const fetchOrder = async () => {
             try {
                 const response = await axios.get(`/api/users/order`);
-                setOrders(response.data)
-                // console.log(response.data)
+                setOrders(response.data);
             } catch (error) {
-                console.error(`Error fetching order ${error}`)
+                console.error(`Error fetching order ${error}`);
             }
-        }
+        };
         fetchOrder();
-    }, [])
+    }, []);
 
+    // to render the image
     const imageRender = (cart) => `http://localhost:9999/${cart.imagePath.replace(/\\/g, '/')}`;
 
+    // to format date
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
     };
+
+    // for search
+    const filteredOrders = orders.filter((order) => {
+        return (
+            order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            order.items.some((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            order.deliveryDetails.some((delivery) => delivery.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
+    });
 
     return (
         <>
@@ -34,25 +44,38 @@ const OrderPage = () => {
                     <h1 className='text-center font-[700] text-[3.5rem]'>
                         Completed Order
                     </h1>
+                    <div className='float-right'>
+                        <input
+                            type="text"
+                            placeholder='Search Order'
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className='font-[500] px-[1rem] py-[.3rem] rounded-md'
+                        />
+                    </div>
                     <div className='py-[3rem]'>
-                        {orders.map((order) => (
-                            <div key={order._id}>
-                                <h2>Order ID: {order._id}</h2>
+                        {filteredOrders.map((order) => (
+                            <div key={order._id} className='mb-[1rem] p-[1rem] rounded-[15px] font-[500] hover:shadow-xl'>
+                                <h2 className='text-[1.1rem] pb-[1rem]'>
+                                    Order ID: {order._id}
+                                </h2>
                                 {order.items.map((item) => (
-                                    <div key={item._id}>
-                                        <p>Order: {item.name}</p>
-                                        {/* para marender yung description kasi nested */}
-                                        <p>Description: {item.itemId && item.itemId.description}</p>
-                                        <p>Quantity: {item.quantity}</p>
-                                        <p>Price: ₱{item.price}</p>
-                                        {item.imagePath && (
-                                            <img 
-                                            src={imageRender(item)} 
-                                            alt={item.name} 
-                                            className='h-[100px] w-[100px] object-contain'
-                                            />
-                                        )}
-
+                                    <div key={item._id} className='flex pb-[.5rem]'>
+                                        <div>
+                                            <p>Order: {item.name}</p>
+                                            <p>Description: {item.itemId && item.itemId.description}</p>
+                                            <p>Quantity: {item.quantity}</p>
+                                            <p>Price: ₱{item.price}</p>
+                                        </div>
+                                        <div className='ml-auto'>
+                                            {item.imagePath && (
+                                                <img
+                                                    src={imageRender(item)}
+                                                    alt={item.name}
+                                                    className='h-[100px] w-[100px] object-contain'
+                                                />
+                                            )}
+                                        </div>
                                     </div>
                                 ))}
                                 <p>Total Amount: {order.totalAmount}</p>
@@ -70,7 +93,7 @@ const OrderPage = () => {
                 </div>
             </section>
         </>
-    )
-}
+    );
+};
 
-export default OrderPage
+export default OrderPage;

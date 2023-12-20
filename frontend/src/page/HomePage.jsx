@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 const HomePage = () => {
 
   const [products, setProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -34,14 +35,29 @@ const HomePage = () => {
   //for image render and turn uploads\\image to this -> uploads/image para mabasa ng ayos
   const imageRender = (product) => `http://localhost:9999/${product.imagePath.replace(/\\/g, '/')}`;
 
+  const filteredProducts = products.filter((product) => {
+    return (
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.price.toString().includes(searchTerm.toLowerCase())
+    );
+  });
+
   return (
     <>
       <Header />
       <main className='text-slate-800'>
         <div className='pt-[2rem] px-[5rem]'>
           <h1 className='text-center font-[700] text-[3.5rem]'>Product List</h1>
-          <div className='grid sm:grid-cols-2 xl:grid-cols-4  py-[3rem] text-center'>
-            {products.map((product) => (
+          <input
+            type="text"
+            placeholder='Search Order'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className='absolute right-0 mr-[10%] font-[500] px-[1rem] py-[.3rem] rounded-md'
+          />
+          <div className='grid sm:grid-cols-2 xl:grid-cols-4 pt-[4rem] pb-[3rem] text-center'>
+            {filteredProducts.map((product) => (
               <div key={product._id} className='hover:shadow-xl relative rounded-xl py-[1rem]'>
                 <p className='text-[1.5rem] font-[600]'>
                   {product.name}
@@ -59,7 +75,7 @@ const HomePage = () => {
                   {product.description}
                 </p>
                 <p className='font-[500]'>
-                ₱{product.price}
+                  ₱{product.price}
                 </p>
                 <FaShoppingCart className='absolute bottom-[2rem] right-[2rem] text-[2rem] text-yellow-600 cursor-pointer hover:text-slate-800'
                   onClick={() => addToCart(product._id)}
