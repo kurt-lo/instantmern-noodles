@@ -11,7 +11,7 @@ const Header = () => {
   return (
     <nav className="flex justify-between px-[2rem] py-[1rem] mb-[1rem] text-slate-800 font-[700]">
       <div>
-        <Link to='/'>MERN+AUTH</Link>
+        <Link to='/' className='font-[900] italic'>INSTANT NOODLES</Link>
       </div>
       {isAuthenticated ? (
         <ul className="flex gap-[2rem]">

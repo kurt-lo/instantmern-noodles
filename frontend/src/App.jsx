@@ -1,11 +1,18 @@
 import Header from "./component/Header";
+import heroImage from '../../products/hero.jpg'
 
 const App = () => {
   return (
     <>
-      <Header /> {/* login for user */}
+      <Header />
       <section>
-        WELCOME TO MERN+AUTH APPLICATION
+        <div>
+          <img
+            src={heroImage}
+            alt="noodles"
+            className="object-contain h-[90vh] w-[100vw]"
+          />
+        </div>
       </section>
     </>
   )

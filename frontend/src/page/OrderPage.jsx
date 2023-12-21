@@ -56,16 +56,18 @@ const OrderPage = () => {
                     <div className='py-[3rem]'>
                         {filteredOrders.map((order) => (
                             <div key={order._id} className='mb-[1rem] p-[1rem] rounded-[15px] font-[500] hover:shadow-xl'>
-                                <h2 className='text-[1.1rem] pb-[1rem]'>
+                                <h2 className='font-[700] text-[1.1rem] pb-[1rem]'>
                                     Order ID: {order._id}
                                 </h2>
                                 {order.items.map((item) => (
-                                    <div key={item._id} className='flex pb-[.5rem]'>
+                                    <div key={item._id} className='flex pb-[1rem]'>
                                         <div>
-                                            <p>Order: {item.name}</p>
+                                            <h1 className='font-[700] text-[1.1rem]'>Order Details</h1>
+                                            <p>Order Name: {item.name}</p>
                                             <p>Description: {item.itemId && item.itemId.description}</p>
                                             <p>Quantity: {item.quantity}</p>
                                             <p>Price: ₱{item.price}</p>
+                                            <p>Total Amount: {order.totalAmount}</p>
                                         </div>
                                         <div className='ml-auto'>
                                             {item.imagePath && (
@@ -78,13 +80,13 @@ const OrderPage = () => {
                                         </div>
                                     </div>
                                 ))}
-                                <p>Total Amount: {order.totalAmount}</p>
-                                <p>Created At: {formatDate(order.createdAt)}</p>
                                 {order.deliveryDetails.map((delivery) => (
                                     <div key={delivery._id}>
+                                        <h1 className='font-[700] text-[1.1rem]'>Delivery Details</h1>
                                         <p>Name: {delivery.name}</p>
                                         <p>Address: {delivery.address}</p>
                                         <p>Phone Number: {delivery.phoneNumber}</p>
+                                        <p>Date Delivered: {formatDate(order.createdAt)}</p>
                                     </div>
                                 ))}
                             </div>
