@@ -1,4 +1,4 @@
-# Your E-commerce Project
+# E-commerce Project made by Russel Kurt G. Nolasco
 
 A simple e-commerce project built with Node.js, Express, React, and Vite.
 
