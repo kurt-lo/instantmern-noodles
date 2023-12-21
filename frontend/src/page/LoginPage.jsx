@@ -30,16 +30,20 @@ const LoginPage = () => {
         // console.log("Login successful!");
         setEmail('');
         setPassword('');
+        //window.location.href = '/home';
         navigate('/home');
+        window.location.reload(true) //para marefresh yung header kasi hindi nagrerefresh e
       } else {
         setEmail('');
         setPassword('');
         toast.error('Invalid Email or Password!');
       }
     } catch (error) {
+      setEmail('');
+      setPassword('');
       console.error('Error during login:', error.message);
+      toast.error('Invalid Email or Password!');
     }
-    window.location.reload(true) //para marefresh yung header kasi hindi nagrerefresh e
   }
 
   return (
