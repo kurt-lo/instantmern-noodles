@@ -10,7 +10,7 @@ const App = () => {
           <img
             src={heroImage}
             alt="noodles"
-            className="object-contain h-[90vh] w-[100vw]"
+            className="object-contain h-[100vh]"
           />
         </div>
       </section>
