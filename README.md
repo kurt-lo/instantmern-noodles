@@ -19,6 +19,7 @@ A simple e-commerce project built with Node.js, Express, React, and Vite.
 - [MongoDB](https://www.mongodb.com/) - A NoSQL database for modern applications.
 - [Multer](https://github.com/expressjs/multer) - Middleware for handling `multipart/form-data`, primarily used for file uploads.
 - [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) - JSON Web Token implementation for authentication.
+- [bcrypt](https://www.npmjs.com/package/bcrypt) - Library for hashing passwords securely.
 - [cookie-parser](https://www.npmjs.com/package/cookie-parser) - Middleware for parsing cookies.
 - [nodemon](https://nodemon.io/) - Tool to automatically restart your Node.js server on file changes.
 
