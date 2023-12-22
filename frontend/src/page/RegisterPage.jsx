@@ -41,7 +41,7 @@ const RegisterPage = () => {
         console.log('Register error!', response.data);
       }
     } catch (error) {
-      if (error.status === 409) {
+      if (error.response && error.response.status === 409) {
         toast.error('Email already exist!');
       }
       if (password !== confirmPassword) {

@@ -50,6 +50,10 @@ const ProfilePage = () => {
             if (password.length < 8 || confirmPassword.length < 8) {
                 toast.error('Password needs atleast 8 characters!');
             }
+            setEmail('');
+            setName('');
+            setPassword('');
+            setConfirmPassword('');
             console.error(`Error updating user data: ${error}`)
         }
     }

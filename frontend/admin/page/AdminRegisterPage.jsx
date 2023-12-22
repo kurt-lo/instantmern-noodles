@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import AdminHeader from '../component/AdminHeader'
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -38,7 +39,7 @@ const AdminRegisterPage = () => {
         console.log('Register error!', response.data);
       }
     } catch (error) {
-      if (error.status === 409) {
+      if (error.response && error.response.status === 409) {
         toast.error('Email already exist!');
       }
       if (password !== confirmPassword) {
