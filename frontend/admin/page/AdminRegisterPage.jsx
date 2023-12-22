@@ -23,19 +23,22 @@ const AdminRegisterPage = () => {
       const response = await axios.post('/api/admin/register', {
         name,
         email,
-        password
+        password,
+        confirmPassword
       });
 
       if (response.status === 201) {
         setEmail('');
         setName('');
         setPassword('');
+        setConfirmPassword('');
         alert('Register successful!')
         navigate('/admin/login');
       } else {
         setEmail('');
         setName('');
         setPassword('');
+        setConfirmPassword('');
         console.log('Register error!', response.data);
       }
     } catch (error) {
@@ -51,6 +54,7 @@ const AdminRegisterPage = () => {
       setEmail('');
       setName('');
       setPassword('');
+      setConfirmPassword('');
       console.error('Error during registration:', error)
     }
   };
