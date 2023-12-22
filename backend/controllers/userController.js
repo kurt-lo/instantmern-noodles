@@ -18,9 +18,8 @@ userRouter.post('/register', async (request, response) => {
 
         const userExist = await User.findOne({ email });
         if (userExist) {
-            return response.status(400).json({ error: 'Email is already exist!' })
+            return response.status(409).json({ error: 'Email is already exist!' })
         }
-
         if (password !== confirmPassword) {
             return response.status(400).json({ error: 'Passwords do not match!' })
         }
