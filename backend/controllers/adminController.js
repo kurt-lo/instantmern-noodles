@@ -5,21 +5,35 @@ import { authenticateAdmin } from '../middleware/authMiddleware.js';
 import { generateAdminToken } from '../utils/token.js';
 import uploadMiddleware from '../middleware/uploadMiddleware.js';
 import cookie from 'cookie'
+import bcrypt from 'bcryptjs'
 
 const adminRouter = express.Router();
 
 // Create a new admin
 adminRouter.post('/register', async (request, response) => {
     try {
-        const { name, email, password } = request.body;
+        const { name, email, password, confirmPassword } = request.body;
+
+        const userExist = await Admin.findOne({ email });
+        if (userExist) {
+            return response.status(400).json({ error: 'Email is already exist!' })
+        }
+
+        if (password !== confirmPassword) {
+            return response.status(400).json({ error: 'Passwords do not match!' })
+        }
+        if (password.length < 8 || confirmPassword.length < 8) {
+            return response.status(400).json({ error: 'Password is short needs atleast 8 characters!' })
+        } 
         const admin = await Admin.create({
             name,
             email,
             password,
         });
+
         response.status(201).json(admin);
     } catch (error) {
-        response.status(400).json({ message: 'Invalid Admin Data' });
+        response.status(400).json({ message: 'Invalid Admin Data', error: error.message });
     }
 });
 
@@ -31,7 +45,8 @@ adminRouter.post('/login', async (request, response) => {
         const admin = await Admin.findOne({ email })
 
         if (admin) {
-            if (admin.password === password) {
+            const passwordMatch = await bcrypt.compare(password, admin.password);
+            if (passwordMatch) {
                 const token = generateAdminToken(admin)
 
                 response.setHeader('Set-Cookie', cookie.serialize('token', token, {
@@ -117,8 +132,18 @@ adminRouter.put('/profile', authenticateAdmin, async (request, response) => {
             return response.status(404).json({ message: 'Admin not found' });
         }
 
+        const confirmPassword = request.body.confirmPassword;
+        const password = request.body.password;
+        if (password !== confirmPassword) {
+            return response.status(404).json({ message: 'Password don\'t match!' });
+        }
+        if (password.length < 8 || confirmPassword.length < 8) {
+            return response.status(404).json({ message: 'Password needs atleast 8 characters!' });
+        }
+
         admin.name = request.body.name || admin.name;
         admin.email = request.body.email || admin.email;
+        admin.password = request.body.password || admin.password;
 
         await admin.save();
 
@@ -138,11 +163,18 @@ adminRouter.put('/account/:id', authenticateAdmin, async (request, response) => 
     try {
         const admin = await Admin.findById(request.params.id);
         if (admin) {
+            const confirmPassword = request.body.confirmPassword;
+            const password = request.body.password;
+            if (password !== confirmPassword) {
+                return response.status(404).json({ message: 'Password don\'t match!' });
+            }
+            if (password.length < 8 || confirmPassword.length < 8) {
+                return response.status(404).json({ message: 'Password needs atleast 8 characters!' });
+            }
+            
             admin.name = request.body.name || admin.name;
             admin.email = request.body.email || admin.email;
-            if (request.body.password) {
-                admin.password = request.body.password;
-            }
+            admin.password = request.body.password || admin.password;
 
             const updatedAdmin = await admin.save();
             response.json(updatedAdmin);

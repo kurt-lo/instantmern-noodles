@@ -7,19 +7,32 @@ import { authenticateUser } from '../middleware/authMiddleware.js'
 import uploadMiddleware from '../middleware/uploadMiddleware.js'
 import { generateUserToken } from '../utils/token.js';
 import cookie from 'cookie'
+import bcrypt from 'bcryptjs'
 
 const userRouter = express.Router();
 
 // Create a new ordinary user
 userRouter.post('/register', async (request, response) => {
     try {
-        const { name, email, password } = request.body;
+        const { name, email, password, confirmPassword } = request.body;
 
+        const userExist = await User.findOne({ email });
+        if (userExist) {
+            return response.status(400).json({ error: 'Email is already exist!' })
+        }
+
+        if (password !== confirmPassword) {
+            return response.status(400).json({ error: 'Passwords do not match!' })
+        }
+        if (password.length < 8 || confirmPassword.length < 8) {
+            return response.status(400).json({ error: 'Password is short needs atleast 8 characters!' })
+        }
         const user = await User.create({
             name,
             email,
             password,
         });
+
         response.status(201).json(user);
     } catch (error) {
         response.status(400).json({ message: 'Invalid User Data', error: error.message });
@@ -34,8 +47,9 @@ userRouter.post('/login', async (request, response) => {
         const user = await User.findOne({ email });
 
         if (user) {
+            const passwordMatch = await bcrypt.compare(password, user.password); // bcrypt check or compare the password
 
-            if (user.password === password) {
+            if (passwordMatch) {
                 // Passwords match, so the admin is authenticated
                 const token = generateUserToken(user);
 
@@ -101,10 +115,19 @@ userRouter.put('/profile', authenticateUser, async (request, response) => {
         if (!user) {
             return response.status(404).json({ message: 'User not found' });
         }
+        const confirmPassword = request.body.confirmPassword;
+        const password = request.body.password;
+        if (password !== confirmPassword) {
+            return response.status(404).json({ message: 'Password don\'t match!' });
+        }
+        if (password.length < 8 || confirmPassword.length < 8) {
+            return response.status(404).json({ message: 'Password needs atleast 8 characters!' });
+        }
 
         // Update user's profile with the data from the request body
         user.name = request.body.name || user.name; // Update name if provided
         user.email = request.body.email || user.email; // Update email if provided
+        user.password = request.body.password || user.password;
 
         // Save the updated user details
         await user.save();

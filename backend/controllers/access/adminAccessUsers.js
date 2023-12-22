@@ -37,11 +37,18 @@ adminUserRouter.put('/users/:id', async (request, response) => {
     try {
         const user = await User.findById(request.params.id);
         if (user) {
+            const confirmPassword = request.body.confirmPassword;
+            const password = request.body.password;
+            if (password !== confirmPassword) {
+                return response.status(404).json({ message: 'Password don\'t match!' });
+            }
+            if (password.length < 8 || confirmPassword.length < 8) {
+                return response.status(404).json({ message: 'Password needs atleast 8 characters!' });
+            }
+            
             user.name = request.body.name || user.name;
             user.email = request.body.email || user.email;
-            if (request.body.password) {
-                user.password = request.body.password;
-            }
+            user.password = request.body.password || user.password;
 
             const updatedUser = await user.save();
             response.json(updatedUser);
