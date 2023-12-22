@@ -119,9 +119,9 @@ const AdminHomePage = () => {
     <>
       <AdminHeader />
       <section className='text-slate-800'>
-        <div className='pt-[2rem] px-[5rem]'>
-          <h1 className='text-center font-[700] text-[3.5rem]'>Product List</h1>
-          <div className='absolute right-0 flex items-center gap-[2rem]' style={{ marginRight: '5rem' }}>
+        <div className='pt-0 px-0 md:pt-[2rem] md:px-[4rem] lg:px-[5rem]'>
+          <h1 className='text-center font-[700] text-[3.5rem] pb-[1rem]'>Product List</h1>
+          <div className='search-add-cart absolute right-0 flex items-center gap-[2rem]'>
             <input
               type="text"
               value={search}
@@ -152,7 +152,7 @@ const AdminHomePage = () => {
                       <img
                         src={imageRender(product)}
                         alt={product.name}
-                        className='h-[200px] w-[300px] object-contain'
+                        className='product-images h-[200px] w-[300px] object-contain'
                       />
                     )}
                   </div>

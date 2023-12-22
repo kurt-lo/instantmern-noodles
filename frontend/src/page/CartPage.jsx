@@ -98,7 +98,7 @@ const CartPage = () => {
                         <>
                             <div className='py-[3rem]'>
                                 {carts.map((cart) => (
-                                    <div key={cart._id} className='flex items-center gap-[5rem] hover:shadow-xl relative rounded-xl py-[1rem]'>
+                                    <div key={cart._id} className='flex items-center gap-[1rem] md:gap-[5rem] hover:shadow-xl relative rounded-xl py-[1rem]'>
                                         {cart.imagePath && (
                                             <div className='pl-[2rem]'>
                                                 <img
@@ -136,7 +136,7 @@ const CartPage = () => {
                                     <h1 className='text-[2rem] font-[500]'>Total</h1>
                                     <p className='text-[1.5rem] font-[500]'>₱{totalAmount}</p>
                                 </div>
-                                <div className='px-[3rem] pt-[.5rem] float-right'>
+                                <div className='px-[3rem] pt-[.5rem] mb-[5rem] float-right'>
                                     <button
                                         className='py-[.5rem] px-[3rem] border-solid border-2 border-slate-800 rounded-[25px] font-[700] hover:bg-slate-800 hover:text-gray-300'
                                         onClick={() => setIsModalOpen(true)}
@@ -145,7 +145,7 @@ const CartPage = () => {
                                     </button>
                                     {isModalOpen && (
                                         <div className="fixed inset-0 bg-slate-800 bg-opacity-25 backdrop-blur-sm flex items-center justify-center">
-                                            <div className="bg-white p-2 rounded-[15px] py-[2rem] w-[40%]">
+                                            <div className="bg-white p-2 rounded-[15px] py-[2rem] w-[90%] md:[50%] lg:w-[60%] xl:w-[40%]">
                                                 <div className='relative'>
                                                     <h1 className="font-semibold text-center text-xl text-slate-800 pb-[1.5rem]">
                                                         Delivery Details
@@ -155,7 +155,7 @@ const CartPage = () => {
                                                     />
                                                 </div>
                                                 <div className="flex flex-col gap-[1.5rem]">
-                                                    <div className='flex items-center gap-[2rem] w-[80%] mx-auto'>
+                                                    <div className='flex items-center gap-[.8rem] sm:gap-[2rem] w-[80%] mx-auto'>
                                                         <FaUser className="text-[1.5rem]" />
                                                         <input
                                                             type="text"
@@ -165,7 +165,7 @@ const CartPage = () => {
                                                             onChange={(e) => setName(e.target.value)}
                                                         />
                                                     </div>
-                                                    <div className='flex items-center gap-[2rem] w-[80%] mx-auto'>
+                                                    <div className='flex items-center gap-[.8rem] sm:gap-[2rem] w-[80%] mx-auto'>
                                                         <IoHome className="text-[1.5rem]" />
                                                         <input
                                                             type="text"
@@ -175,7 +175,7 @@ const CartPage = () => {
                                                             onChange={(e) => setAddress(e.target.value)}
                                                         />
                                                     </div>
-                                                    <div className='flex items-center gap-[2rem] w-[80%] mx-auto'>
+                                                    <div className='flex items-center gap-[.8rem] sm:gap-[2rem] w-[80%] mx-auto'>
                                                         <BsFillTelephoneFill className="text-[1.5rem]" />
                                                         <input
                                                             type="text"

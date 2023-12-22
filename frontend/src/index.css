@@ -45,4 +45,17 @@ input {
 .delete-icon:hover, .update-icon:hover {
     opacity: 0.3;
 }
-  
+
+/* .users-info{
+    width: 50%;
+} */
+
+.search-add-cart {
+    margin-right: 5rem;
+}
+
+@media (max-width: 640px) {
+    .search-add-cart {
+        margin-right: 10px;
+    }
+}

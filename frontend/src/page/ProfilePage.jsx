@@ -61,7 +61,7 @@ const ProfilePage = () => {
     return (
         <>
             <Header />
-            <section className='section-profile mt-[5rem] w-[50%] mx-auto px-[4rem] py-[2rem] rounded-[10px] text-slate-800'>
+            <section className='section-profile mt-[5rem] w-[90%] md:w-[50%] mx-auto px-[4rem] py-[2rem] rounded-[10px] text-slate-800'>
                 <div className='relative'>
                     <h1 className='text-center text-2xl font-bold mb-4'>Profile Information</h1>
                     <FaUserEdit className='absolute text-[1.5rem] right-0 -top-0 cursor-pointer'

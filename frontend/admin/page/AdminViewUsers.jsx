@@ -77,7 +77,7 @@ const AdminViewUsers = () => {
     return (
         <>
             <AdminHeader />
-            <section className='section-profile mt-[5rem] w-[50%] mx-auto px-[4rem] py-[2rem] rounded-[10px] text-slate-800'>
+            <section className='section-profile users-info w-[90%] md:[50%] lg:w-[60%] xl:w-[40%] mt-[5rem] mx-auto px-[4rem] py-[2rem] mb-[5rem] rounded-[10px] text-slate-800'>
                 <div className=''>
                     <h1 className='text-center text-2xl font-bold mb-4'>All Users Profile Information</h1>
                 </div>

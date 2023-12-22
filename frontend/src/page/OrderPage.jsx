@@ -41,7 +41,7 @@ const OrderPage = () => {
             <Header />
             <section className='text-slate-800'>
                 <div className='pt-[2rem] 2xl:px-[30rem] xl:px-[20rem] md:px-[5rem] sm:px-0'>
-                    <h1 className='text-center font-[700] text-[3.5rem]'>
+                    <h1 className='text-center font-[700] text-[3.5rem] pb-[1rem]'>
                         Completed Order
                     </h1>
                     <div className='float-right'>
@@ -55,7 +55,7 @@ const OrderPage = () => {
                     </div>
                     <div className='py-[3rem]'>
                         {filteredOrders.map((order) => (
-                            <div key={order._id} className='mb-[1rem] p-[1rem] rounded-[15px] font-[500] hover:shadow-xl'>
+                            <div key={order._id} className='mb-[1rem] p-[1rem] rounded-[15px] font-[500] border-2 border-solid border-gray-100 hover:shadow-xl hover:border-0'>
                                 <h2 className='font-[700] text-[1.1rem] pb-[1rem]'>
                                     Order ID: {order._id}
                                 </h2>

@@ -47,8 +47,8 @@ const HomePage = () => {
     <>
       <Header />
       <main className='text-slate-800'>
-        <div className='pt-[2rem] px-[5rem]'>
-          <h1 className='text-center font-[700] text-[3.5rem]'>Product List</h1>
+        <div className='pt-0 px-0 md:pt-[2rem] md:px-[4rem] lg:px-[5rem]'>
+          <h1 className='text-center font-[700] text-[3.5rem] pb-[1rem]'>Product List</h1>
           <input
             type="text"
             placeholder='Search Product'
@@ -77,7 +77,7 @@ const HomePage = () => {
                 <p className='font-[500]'>
                   ₱{product.price}
                 </p>
-                <FaShoppingCart className='absolute bottom-[2rem] right-[2rem] text-[2rem] text-yellow-600 cursor-pointer hover:text-slate-800'
+                <FaShoppingCart className='absolute bottom-[2rem] right-[2rem] sm:bottom-[1rem] sm:right-[1rem] text-[2rem] text-yellow-600 cursor-pointer hover:text-slate-800'
                   onClick={() => addToCart(product._id)}
                 />
               </div>
