@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from '../context/axiosConfig'
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -11,6 +12,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const navigate = useNavigate();
 
@@ -21,25 +23,37 @@ const RegisterPage = () => {
       const response = await axios.post('api/users/register', {
         name,
         email,
-        password
+        password,
+        confirmPassword
       });
-
       if (response.status === 201) {
         setEmail('');
         setName('');
         setPassword('');
+        setConfirmPassword('');
         alert('Register successful!')
         navigate('/login');
       } else {
         setEmail('');
         setName('');
         setPassword('');
+        setConfirmPassword('');
         console.log('Register error!', response.data);
       }
     } catch (error) {
+      if (error.status = 409) {
+        toast.error('Email already exist!');
+      }
+      if (password !== confirmPassword) {
+        toast.error('Password don\'t match!');
+      }
+      if (password.length < 8 || confirmPassword.length < 8){
+        toast.error('Password needs atleast 8 characters!');
+      }
       setEmail('');
       setName('');
       setPassword('');
+      setConfirmPassword('');
       console.error('Error during registration:', error)
     }
   };
@@ -68,6 +82,12 @@ const RegisterPage = () => {
           <div className="flex items-center gap-[2rem] w-[80%] mx-auto">
             <RiLockPasswordFill className="text-[1.5rem]" />
             <input type="password" value={password} placeholder='Enter Password' onChange={(e) => setPassword(e.target.value)}
+              className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
+            />
+          </div>
+          <div className="flex items-center gap-[2rem] w-[80%] mx-auto">
+            <RiLockPasswordFill className="text-[1.5rem]" />
+            <input type="password" value={confirmPassword} placeholder='Enter Password' onChange={(e) => setConfirmPassword(e.target.value)}
               className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
             />
           </div>

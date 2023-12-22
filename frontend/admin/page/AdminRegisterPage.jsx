@@ -11,6 +11,7 @@ const AdminRegisterPage = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const navigate = useNavigate();
 
@@ -37,6 +38,15 @@ const AdminRegisterPage = () => {
         console.log('Register error!', response.data);
       }
     } catch (error) {
+      if (error.status = 409) {
+        toast.error('Email already exist!');
+      }
+      if (password !== confirmPassword) {
+        toast.error('Password don\'t match!');
+      }
+      if (password.length < 8 || confirmPassword.length < 8){
+        toast.error('Password needs atleast 8 characters!');
+      }
       setEmail('');
       setName('');
       setPassword('');
@@ -52,6 +62,7 @@ const AdminRegisterPage = () => {
           onSubmit={handleRegister}
           className='flex flex-col items-center w-[40%] mx-auto rounded-[25px] gap-[2rem] pb-[2rem] pt-[3rem]'
         >
+          <h1 className="text-[2rem] font-[700]">Howdy Admin, Register!</h1>
           <div className="flex items-center gap-[2rem] w-[80%] mx-auto">
             <FaUser className="text-[1.5rem]" />
             <input type="text" value={name} placeholder='Enter Name' onChange={(e) => setName(e.target.value)}
@@ -67,6 +78,12 @@ const AdminRegisterPage = () => {
           <div className="flex items-center gap-[2rem] w-[80%] mx-auto">
             <RiLockPasswordFill className="text-[1.5rem]" />
             <input type="password" value={password} placeholder='Enter Password' onChange={(e) => setPassword(e.target.value)}
+              className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
+            />
+          </div>
+          <div className="flex items-center gap-[2rem] w-[80%] mx-auto">
+            <RiLockPasswordFill className="text-[1.5rem]" />
+            <input type="password" value={confirmPassword} placeholder='Enter Password' onChange={(e) => setConfirmPassword(e.target.value)}
               className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
             />
           </div>
