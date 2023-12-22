@@ -129,7 +129,7 @@ adminRouter.put('/profile', authenticateAdmin, async (request, response) => {
         const admin = await Admin.findById(authenticatedAdmin._id);
 
         if (!admin) {
-            return response.status(409).json({ message: 'Admin not found' });
+            return response.status(408).json({ message: 'Admin not found' });
         }
 
         const confirmPassword = request.body.confirmPassword;
