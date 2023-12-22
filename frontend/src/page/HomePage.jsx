@@ -56,9 +56,9 @@ const HomePage = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className='absolute right-0 mr-[10%] font-[500] px-[1rem] py-[.3rem] rounded-md'
           />
-          <div className='grid sm:grid-cols-2 xl:grid-cols-4 pt-[4rem] pb-[3rem] text-center'>
+          <div className='grid gap-1 sm:grid-cols-2 xl:grid-cols-4 pt-[4rem] pb-[3rem] text-center'>
             {filteredProducts.map((product) => (
-              <div key={product._id} className='hover:shadow-xl relative rounded-xl py-[1rem]'>
+              <div key={product._id} className='border-2 border-solid border-slate-50 hover:shadow-xl relative rounded-xl py-[1rem]'>
                 <p className='text-[1.5rem] font-[600]'>
                   {product.name}
                 </p>

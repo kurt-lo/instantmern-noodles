@@ -84,8 +84,8 @@ const AdminViewUsers = () => {
                 {allUserData ? (
                     <div className='text-lg relative'>
                         {allUserData.map((user) => (
-                            <div key={user._id} className='mb-4'>
-                                <div className='absolute flex right-0'>
+                            <div key={user._id} className='mb-4 border-2 border-solid border-gray-300' style={{ borderRadius: '15px', padding: '1rem'}}>
+                                <div className='flex float-right mt-3'>
                                     <FaUserEdit className='text-[1.5rem] update-icon cursor-pointer'
                                         onClick={() => setIsModalOpen(user._id)}
                                     />
@@ -94,7 +94,7 @@ const AdminViewUsers = () => {
                                     />
                                 </div>
                                 <div>
-                                    <p className='pt-[.7rem]'>
+                                    <p className=''>
                                         <span className='font-semibold'>Name:</span> {user.name}
                                     </p>
                                     <p className='pt-[.7rem]'>

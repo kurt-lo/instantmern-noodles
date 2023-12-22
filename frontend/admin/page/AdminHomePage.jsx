@@ -134,9 +134,9 @@ const AdminHomePage = () => {
               className='text-[2rem] cursor-pointer border-2 border-solid border-slate-800 rounded-md'
             />
           </div>
-          <div className='grid sm:grid-cols-2 xl:grid-cols-4 gap-[1.5rem] pt-[4rem] pb-[3rem] text-center'>
+          <div className='grid sm:grid-cols-2 xl:grid-cols-4 gap-1 pt-[4rem] pb-[3rem] text-center'>
             {filteredProducts.map((product) => (
-              <div key={product._id} className='hover:shadow-xl relative rounded-xl py-[1rem]'>
+              <div key={product._id} className='border-2 border-solid border-slate-50 hover:shadow-xl relative rounded-xl py-[1rem]'>
                 <div className='absolute flex right-0' style={{ marginRight: '1rem', marginTop: '.7rem' }}>
                   <FaUserEdit className='text-[1.5rem] update-icon cursor-pointer'
                     onClick={() => setUpdateModalOpen(product._id)}
