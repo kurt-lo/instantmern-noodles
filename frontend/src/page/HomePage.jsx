@@ -67,7 +67,7 @@ const HomePage = () => {
                     <img
                       src={imageRender(product)}
                       alt={product.name}
-                      className='h-[300px] w-[400px] object-contain'
+                      className='h-[200px] w-[300px] object-contain'
                     />
                   </div>
                 )}
