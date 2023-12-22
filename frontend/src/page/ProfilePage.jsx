@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { toast } from 'react-toastify';
 import { FaUserEdit } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
@@ -14,6 +15,7 @@ const ProfilePage = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -34,13 +36,20 @@ const ProfilePage = () => {
             const response = await axios.put('api/users/profile', {
                 name,
                 email,
-                password
+                password,
+                confirmPassword
             });
             setUserData(response.data);
             alert('Update profile successful!')
             window.location.reload(true)
             setIsModalOpen(false);
         } catch (error) {
+            if (password !== confirmPassword) {
+                toast.error('Password don\'t match!');
+            }
+            if (password.length < 8 || confirmPassword.length < 8) {
+                toast.error('Password needs atleast 8 characters!');
+            }
             console.error(`Error updating user data: ${error}`)
         }
     }
@@ -83,7 +92,18 @@ const ProfilePage = () => {
                                         type="email"
                                         className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
                                         placeholder={userData.email}
+                                        value={email}
                                         onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
+                                <div className='flex items-center gap-[2rem] w-[80%] mx-auto'>
+                                    <RiLockPasswordFill className="text-[1.5rem]" />
+                                    <input
+                                        type="password"
+                                        value={password}
+                                        className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
+                                        placeholder='********'
+                                        onChange={(e) => setPassword(e.target.value)}
                                     />
                                 </div>
                                 <div className='flex items-center gap-[2rem] w-[80%] mx-auto'>
@@ -92,7 +112,7 @@ const ProfilePage = () => {
                                         type="password"
                                         className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
                                         placeholder='********'
-                                        onChange={(e) => setPassword(e.target.value)}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
                                     />
                                 </div>
                             </div>

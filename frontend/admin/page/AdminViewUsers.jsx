@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import AdminHeader from '../component/AdminHeader'
 import axios from 'axios'
+import { toast } from 'react-toastify';
 import { FaUserEdit } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
@@ -14,6 +15,7 @@ const AdminViewUsers = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
@@ -36,6 +38,7 @@ const AdminViewUsers = () => {
                 name,
                 email,
                 password,
+                confirmPassword
             });
             const updatedUserData = allUserData.map(user => (user._id === id ? response.data : user));
             setAllUserData(updatedUserData);
@@ -45,6 +48,12 @@ const AdminViewUsers = () => {
             setEmail('');
             setPassword('');
         } catch (error) {
+            if (password !== confirmPassword) {
+                toast.error('Password don\'t match!');
+            }
+            if (password.length < 8 || confirmPassword.length < 8) {
+                toast.error('Password needs atleast 8 characters!');
+            }
             console.error(`Error updating specific user data: ${error}`)
         }
     };
@@ -139,6 +148,7 @@ const AdminViewUsers = () => {
                                                         type="email"
                                                         className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
                                                         placeholder={user.email}
+                                                        value={email}
                                                         onChange={(e) => setEmail(e.target.value)}
                                                     />
                                                 </div>
@@ -148,7 +158,17 @@ const AdminViewUsers = () => {
                                                         type="password"
                                                         className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
                                                         placeholder='********'
+                                                        value={password}
                                                         onChange={(e) => setPassword(e.target.value)}
+                                                    />
+                                                </div>
+                                                <div className='flex items-center gap-[2rem] w-[80%] mx-auto'>
+                                                    <RiLockPasswordFill className="text-[1.5rem]" />
+                                                    <input
+                                                        type="password"
+                                                        className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
+                                                        placeholder='********'
+                                                        onChange={(e) => setConfirmPassword(e.target.value)}
                                                     />
                                                 </div>
                                             </div>
