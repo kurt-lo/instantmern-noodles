@@ -52,7 +52,7 @@ const AdminLoginPage = () => {
           className="flex flex-col items-center w-[40%] mx-auto rounded-[25px] gap-[2rem] py-[2rem] pt-[3rem]"
         >
           <div>
-            <h1>Admin Login</h1>
+          <h1 className="text-[2rem] font-[700]">Howdy Admin, Login!</h1>
           </div>
           <div className="flex items-center gap-[2rem] w-[80%] mx-auto">
             <FaUser className="text-[1.5rem]" />
