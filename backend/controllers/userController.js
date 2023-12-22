@@ -117,10 +117,10 @@ userRouter.put('/profile', authenticateUser, async (request, response) => {
         const confirmPassword = request.body.confirmPassword;
         const password = request.body.password;
         if (password !== confirmPassword) {
-            return response.status(404).json({ message: 'Password don\'t match!' });
+            return response.status(400).json({ message: 'Password don\'t match!' });
         }
         if (password.length < 8 || confirmPassword.length < 8) {
-            return response.status(404).json({ message: 'Password needs atleast 8 characters!' });
+            return response.status(400).json({ message: 'Password needs atleast 8 characters!' });
         }
 
         // Update user's profile with the data from the request body
