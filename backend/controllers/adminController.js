@@ -16,7 +16,7 @@ adminRouter.post('/register', async (request, response) => {
 
         const userExist = await Admin.findOne({ email });
         if (userExist) {
-            return response.status(400).json({ error: 'Email is already exist!' })
+            return response.status(409).json({ error: 'Email is already exist!' })
         }
 
         if (password !== confirmPassword) {

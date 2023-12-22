@@ -38,7 +38,7 @@ const AdminRegisterPage = () => {
         console.log('Register error!', response.data);
       }
     } catch (error) {
-      if (error.status = 409) {
+      if (error.status === 409) {
         toast.error('Email already exist!');
       }
       if (password !== confirmPassword) {
