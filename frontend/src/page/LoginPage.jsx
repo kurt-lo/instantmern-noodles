@@ -52,18 +52,18 @@ const LoginPage = () => {
     <section className="mt-[10rem] text-slate-800">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-center w-[90%] md:[50%] lg:w-[60%] xl:w-[40%] mx-auto rounded-[25px] gap-[2rem] py-[2rem] pt-[3rem]"
+        className="flex flex-col items-center w-[90%] md:[50%] lg:w-[60%] xl:w-[40%] mx-auto shadow-2xl rounded-[25px] gap-[2rem] py-[2rem] pt-[3rem]"
       >
         <h1 className="text-[2rem] font-[700]">Howdy, Login!</h1>
         <div className="flex items-center gap-[.8rem] sm:gap-[2rem] w-[80%] mx-auto">
           <FaUser className="text-[1.5rem]" />
-          <input type="email" value={email} placeholder='Enter Email' onChange={(e) => setEmail(e.target.value)}
+          <input type="email" value={email} placeholder='Enter Email' required onChange={(e) => setEmail(e.target.value)}
             className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
           />
         </div>
         <div className="flex items-center gap-[.8rem] sm:gap-[2rem] w-[80%] mx-auto">
           <RiLockPasswordFill className="text-[1.5rem]" />
-          <input type="password" value={password} placeholder='Enter Password' onChange={(e) => setPassword(e.target.value)}
+          <input type="password" value={password} placeholder='Enter Password' required onChange={(e) => setPassword(e.target.value)}
             className="py-[.5rem] px-[1rem] text-left flex-1 rounded-[15px]"
           />
         </div>

@@ -2,17 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-nav {
+/* nav {
     box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.75);
     -webkit-box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.75);
-}
+} */
 
-section form {
+/* section form {
     box-shadow: 0px 0px 11px 0px rgba(0, 0, 0, 0.75);
     -webkit-box-shadow: 0px 0px 11px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 0px 0px 11px 0px rgba(0, 0, 0, 0.75);
-}
+} */
 
 input {
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
@@ -20,7 +20,7 @@ input {
     -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
-.section-profile {
+/* .section-profile {
     box-shadow: 0px 0px 11px 0px rgba(0, 0, 0, 0.75);
     -webkit-box-shadow: 0px 0px 11px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 0px 0px 11px 0px rgba(0, 0, 0, 0.75);
@@ -30,7 +30,7 @@ input {
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
     -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
-}
+} */
 
 /* MODAL EDIT */
 .update-icon {

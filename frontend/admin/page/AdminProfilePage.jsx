@@ -61,7 +61,7 @@ const AdminProfilePage = () => {
   return (
     <>
       <AdminHeader />
-      <section className='section-profile mt-[5rem] w-[90%] md:[50%] lg:w-[60%] xl:w-[40%] mx-auto px-[4rem] py-[2rem] rounded-[10px] text-slate-800'>
+      <section className='section-profile mt-[5rem] w-[90%] md:[50%] lg:w-[60%] xl:w-[40%] mx-auto px-[4rem] py-[2rem] shadow-2xl rounded-[10px] text-slate-800'>
         <div className='relative'>
           <h1 className='text-center text-2xl font-bold mb-4'>Admin Profile Information</h1>
           <FaUserEdit className='absolute text-[1.5rem] right-0 -top-0 cursor-pointer'

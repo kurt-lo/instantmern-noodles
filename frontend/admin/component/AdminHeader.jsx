@@ -7,7 +7,7 @@ const AdminHeader = () => {
   const [dropdown, setDropdown] = useState(false);
 
   return (
-    <nav className="flex justify-between px-[2rem] py-[1rem] mb-[1rem] text-slate-800 font-[700]">
+    <nav className="flex justify-between shadow-xl px-[2rem] py-[1rem] mb-[1rem] text-slate-800 font-[700]">
       <div>
         <Link to='/admin'>MERN+AUTH - ADMIN</Link>
       </div>
