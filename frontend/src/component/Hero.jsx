@@ -9,7 +9,7 @@ const Hero = () => {
     const { isAuthenticated } = useContext(AuthContext);
 
     return (
-        <div className="mt-[1rem] sm:mt-[3rem]  px-[2rem] py-[3rem] rounded-[25px] shadow-xl">
+        <div className="w-100% sm:w-[90%] mx-auto mt-[1rem] sm:mt-[3rem]  px-[2rem] py-[3rem] rounded-[25px] shadow-xl">
             <div>
                 <h1 className="text-center font-[700] text-[3rem]">Order Noodles Instantly!</h1>
             </div>
