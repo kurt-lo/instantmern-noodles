@@ -473,4 +473,53 @@ userRouter.post('/order/checkout', authenticateUser, async (request, response) =
     }
 });
 
+// @route   GET /api/order/best-selling
+// @desc    Get the best-selling product
+// @access  Public
+userRouter.get('/best-selling', async (request, response) => {
+    try {
+        // Group orders by itemId and sum the quantities for each item
+        const bestSellingProduct = await Order.aggregate([
+            {
+                $unwind: '$items',
+            },
+            {
+                $group: {
+                    _id: '$items.itemId',
+                    totalQuantity: { $sum: '$items.quantity' },
+                },
+            },
+            {
+                $sort: { totalQuantity: -1 },
+            },
+            {
+                $limit: 1,
+            },
+            {
+                $lookup: {
+                    from: 'products', // Assuming your product model is named 'Product'
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'productDetails',
+                },
+            },
+            {
+                $unwind: '$productDetails',
+            },
+            {
+                $project: {
+                    _id: '$productDetails._id',
+                    name: '$productDetails.name',
+                    totalQuantity: 1,
+                },
+            },
+        ]);
+
+        response.json(bestSellingProduct);
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({ message: 'Server Error' });
+    }
+});
+
 export default userRouter;
