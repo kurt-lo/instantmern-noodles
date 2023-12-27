@@ -473,7 +473,7 @@ userRouter.post('/order/checkout', authenticateUser, async (request, response) =
     }
 });
 
-// @route   GET /api/order/best-selling
+// @route   GET /api/best-selling
 // @desc    Get the best-selling product
 // @access  Public
 userRouter.get('/best-selling', async (request, response) => {
@@ -510,12 +510,15 @@ userRouter.get('/best-selling', async (request, response) => {
                 $project: {
                     _id: '$productDetails._id',
                     name: '$productDetails.name',
+                    description: '$productDetails.description',
+                    price: '$productDetails.price',
+                    imagePath: '$productDetails.imagePath',
                     totalQuantity: 1,
                 },
             },
         ]);
 
-        response.json(bestSellingProduct);
+        response.json(bestSellingProduct[0]); // Assuming you want a single best-selling product
     } catch (error) {
         console.error(error);
         response.status(500).json({ message: 'Server Error' });
