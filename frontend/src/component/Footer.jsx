@@ -48,7 +48,7 @@ const Footer = () => {
                         <FaTwitter />
                     </div>
                 </div>
-                <div className="w-full sm:w-1/2 md:w-1/4 lg:w-1/5 mb-4">
+                {/* <div className="w-full sm:w-1/2 md:w-1/4 lg:w-1/5 mb-4">
                     <h3 className="text-xl font-bold mb-4">Newsletter</h3>
                     <p>Subscribe to our newsletter for updates and promotions.</p>
                     <form className="mt-2">
@@ -61,7 +61,7 @@ const Footer = () => {
                             Subscribe
                         </button>
                     </form>
-                </div>
+                </div> */}
             </div>
             <div className='text-center mt-[2rem]'>
                 <p>&copy; 2023 Your Business. All rights reserved.</p>

@@ -3,14 +3,14 @@ import axios from 'axios'
 
 const BestSeller = () => {
 
-  const [bestSeller, setBestSeller] = useState([])
+  const [bestSeller, setBestSeller] = useState()
 
   useEffect(() => {
     const fetchBestSeller = async () => {
       try {
         const response = await axios.get(`/api/users/best-selling`)
         setBestSeller(response.data)
-        console.log(response.data)
+        // console.log(response.data)
       } catch (error) {
         console.error(`Error fetching best seller product ${error}`)
       }
@@ -20,28 +20,31 @@ const BestSeller = () => {
   }, [])
 
   //for image render and turn uploads\\image to this -> uploads/image para mabasa ng ayos
-  const imageRender = (product) => `http://localhost:9999/${product.imagePath.replace(/\\/g, '/')}`;
-
-  // Check if bestSeller is an array, if not, convert it to an array
-  const bestSellerArray = Array.isArray(bestSeller) ? bestSeller : [bestSeller];
+  const imageRender = (imagePath) => `http://localhost:9999/${imagePath.replace(/\\/g, '/')}`;
 
   return (
     <section className='w-100% sm:w-[90%] mx-auto mt-[1rem] sm:mt-[3rem] px-[2rem] py-[3rem]'>
       <div>
-        <h1>Our Best Selling Noodles!</h1>
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
-          {bestSellerArray.map((product) => (
-            <div key={product._id} className='bg-white p-4 rounded shadow'>
-              <img
-                src={imageRender(product)}
-                alt={product.name}
-                className='w-full h-32 object-cover mb-4'
-              />
-              <h2 className='text-xl font-bold mb-2'>{product.name}</h2>
-              <p className='text-gray-700 mb-2'>{product.description}</p>
-              <p className='text-lg font-bold text-green-500'>${product.price}</p>
-            </div>
-          ))}
+        <div className='flex justify-center'>
+          {bestSeller && (
+            <>
+              <div className='pt-[4rem]'>
+                <h1 className='text-[2rem] font-[500] pb-[.7rem]'>Our Best Selling Noodles!</h1>
+                <p className='text-[1.3rem] font-[500]'>{bestSeller.name}</p>
+                <p className='font-[500] text-slate-700'>{bestSeller.description}</p>
+                <p className='text-[1.1rem] font-[500] text-green-300'>${bestSeller.price}</p>
+              </div>
+              <div className=''>
+                {bestSeller.imagePath && (
+                  <img 
+                  src={imageRender(bestSeller.imagePath)}
+                  alt={bestSeller.name}
+                  className='h-[400px] w-[500px] object-contain'
+                  />
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </section>
