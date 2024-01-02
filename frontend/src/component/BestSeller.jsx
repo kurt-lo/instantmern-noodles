@@ -29,7 +29,7 @@ const BestSeller = () => {
           {bestSeller && (
             <>
               <div className='pt-[4rem]'>
-                <h1 className='text-[2rem] font-[500] pb-[.7rem]'>Our Best Selling Noodles!</h1>
+                <h1 className='text-[2rem] font-[700] pb-[.7rem]'>Our Best Selling Noodles!</h1>
                 <p className='text-[1.3rem] font-[500]'>{bestSeller.name}</p>
                 <p className='font-[500] text-slate-700'>{bestSeller.description}</p>
                 <p className='text-[1.1rem] font-[500] text-green-300'>${bestSeller.price}</p>
