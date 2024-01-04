@@ -20,7 +20,7 @@ const app = express();
 
 app.use(express.json())
 const corsOptions = {
-    origin: 'https://mern-stack-frontend-omega.vercel.app',
+    origin: '*',
     credentials: true,  // This allows sending cookies and other credentials
     allowedHeaders: ['Content-Type', 'Authorization'],
   };
