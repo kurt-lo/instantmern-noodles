@@ -10,6 +10,7 @@ const BestSeller = () => {
       try {
         const response = await axios.get(`/api/users/best-selling`)
         setBestSeller(response.data)
+        console.log('Request URL:', `/api/users/best-selling`);
         // console.log(response.data)
       } catch (error) {
         console.error(`Error fetching best seller product ${error}`)
