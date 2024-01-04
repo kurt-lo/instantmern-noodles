@@ -19,7 +19,10 @@ connectDB()
 const app = express();
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin: 'https://mern-stack-frontend-omega.vercel.app',
+    credentials: true, // if your requests include credentials (cookies, HTTP authentication)
+  }));
 app.use(express.urlencoded({ extended: true }))
 
 app.use(cookieParser())
