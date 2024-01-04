@@ -19,13 +19,7 @@ connectDB()
 const app = express();
 
 app.use(express.json())
-const corsOptions = {
-    origin: '*',
-    credentials: true,  // This allows sending cookies and other credentials
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  };
-  
-  app.use(cors(corsOptions));
+app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 
 app.use(cookieParser())
