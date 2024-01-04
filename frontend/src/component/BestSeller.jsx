@@ -4,7 +4,7 @@ import axios from 'axios'
 const BestSeller = () => {
 
   const [bestSeller, setBestSeller] = useState()
-
+  axios.defaults.withCredentials = true
   useEffect(() => {
     const fetchBestSeller = async () => {
       try {
