@@ -20,7 +20,7 @@ const BestSeller = () => {
   }, [])
 
   //for image render and turn uploads\\image to this -> uploads/image para mabasa ng ayos
-  const imageRender = (imagePath) => `https://mern-stack-practice-liart.vercel.app/${imagePath.replace(/\\/g, '/')}`;
+  const imageRender = (imagePath) => `http://localhost:9999/${imagePath.replace(/\\/g, '/')}`;
 
   return (
     <section className='w-100% sm:w-[90%] mx-auto mt-[1rem] sm:mt-[3rem] px-[2rem] py-[3rem]'>

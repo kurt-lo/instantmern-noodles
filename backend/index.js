@@ -18,15 +18,11 @@ connectDB()
 
 const app = express();
 
-app.use(cors({
-    origin: 'https://mern-stack-frontend-kohl.vercel.app',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-  }));
-  
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
-  app.use(cookieParser());
+app.use(express.json())
+app.use(cors())
+app.use(express.urlencoded({ extended: true }))
+
+app.use(cookieParser())
 
 // Serve static files from the 'uploads' directory, para ma render sa frontend yung image
 const __filename = fileURLToPath(import.meta.url);
