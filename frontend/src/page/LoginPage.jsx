@@ -18,7 +18,7 @@ const LoginPage = () => {
     e.preventDefault()
 
     try {
-      const response = await axios.post('/api/users/login', {
+      const response = await axios.post('https://mern-stack-backend-one.vercel.app/api/users/login', {
         email,
         password,
       });
