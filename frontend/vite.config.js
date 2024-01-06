@@ -9,6 +9,7 @@ export default defineConfig({
       '/api': {
         target: 'https://mern-stack-backend-one.vercel.app',
         changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     }
   }
