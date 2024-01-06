@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-// import axios from '../context/axiosConfig';
-import axios from 'axios';
+import axios from '../context/axiosConfig';
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Header from "../component/Header";
@@ -18,16 +17,13 @@ const LoginPage = () => {
     e.preventDefault()
 
     try {
-      const response = await axios.post('https://mern-stack-backend-one.vercel.app/api/users/login', {
+      const response = await axios.post('/api/users/login', {
         email,
         password,
       });
 
-      // Extract the token from the response data
       const data = await response.data;
-      // Ichecheck kung yung response contains a token
       if (data.token) {
-        // Kapag may token ilalagay sa localstorage
         localStorage.setItem('authUserToken', data.token);
         alert('Login successful!')
         // toast.success("Login successful!");

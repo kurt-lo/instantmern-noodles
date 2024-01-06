@@ -19,11 +19,7 @@ connectDB()
 const app = express();
 
 app.use(express.json())
-app.use(cors({
-    origin: 'https://mern-stack-frontend-alpha.vercel.app',
-    credentials: true, // Include credentials in CORS request (if needed)
-  }));
-  
+app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 
 app.use(cookieParser())
@@ -52,13 +48,5 @@ app.use('/api/admin/access-users', adminUserRouter)
 // app.use('/api/cart', cartRoutes)
 
 app.get('/', (request, response) => response.send('Backend is ready!'))
-
-// Serve static files in all environments
-app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
-
-// For any other route, serve the index.html
-app.get('*', (req, res) =>
-  res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
-);
 
 app.listen(port, () => console.log(`Backend is connected to port: ${port}`))
