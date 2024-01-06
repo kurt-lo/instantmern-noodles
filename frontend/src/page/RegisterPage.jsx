@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import axios from '../context/axiosConfig'
+// import axios from '../context/axiosConfig'
+import axios from 'axios'
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { FaUser } from "react-icons/fa";
