@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import axios from '../context/axiosConfig';
+// import axios from '../context/axiosConfig'
+import axios from 'axios'
 import { FaUser } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Header from "../component/Header";
@@ -22,8 +23,11 @@ const LoginPage = () => {
         password,
       });
 
+      //extract the token sa response data
       const data = await response.data;
+      // ichecheck kung yung response ay may token
       if (data.token) {
+        // kapag may token isstore siya sa localstorage
         localStorage.setItem('authUserToken', data.token);
         alert('Login successful!')
         // toast.success("Login successful!");
