@@ -8,7 +8,7 @@ const BestSeller = () => {
   useEffect(() => {
     const fetchBestSeller = async () => {
       try {
-        const response = await axios.get(`/api/users/best-selling`)
+        const response = await axios.get(`https://mern-stack-backend-one.vercel.app/api/users/best-selling`)
         setBestSeller(response.data)
         // console.log(response.data)
       } catch (error) {
